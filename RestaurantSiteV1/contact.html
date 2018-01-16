@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Taste of Food Menu</title>
+                
+        <link href="restaurantStyles.css"
+              rel="stylesheet"
+              type="text/css" />
+                
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" 
+              rel="stylesheet">
+
+        <!-- Bootstrap Link -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+
+        <!-- Optional theme -->
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
+        <style>
+            .inputDescription {
+                text-align: right;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- The Restaurant's name and Webpage Title -->
+        <h1 id="headerTitle">The Taste of Food</h1>
+    <hr>
+        <!-- The Navigation Bar -->
+        <ul class="nav nav-tabs">
+            <li><a href="home.html"><span class="glyphicon glyphicon-home"></span></a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li class="active"><a href="contact.html">Contact Us</a></li>
+        </ul>
+    <hr>
+    
+        <form action="fakePage.html" method="POST">
+            <table>
+                <!-- Name, Email, Phone Text Inputs -->
+                <tr>
+                    <td class="inputDescription">Name: </td>
+                    <td><input type="text" name="Name"></td>
+                </tr>
+                <tr>
+                    <td class="inputDescription">Email: </td> 
+                    <td><input type="text" name="Email"></td>
+                </tr>
+                <tr>
+                    <td class="inputDescription">Phone: </td>
+                    <td><input type="text" name="Phone"></td>
+        
+                <!-- Reason for Inquiry Drop-down -->
+                <tr>
+                    <td class="inputDescription">Reason for Inquiry: </td>
+                    <td><select name="contactReason">
+                        <option value="defaultCatering">Catering</option>
+                        <option value="privateParty">Private Party</option>
+                        <option value="Feedback">Feedback</option>
+                        <option value="Other">Other</option>
+                        </select></td>
+                </tr>
+
+                <!-- Additional Info Expandable Text Area -->
+                <tr>    
+                        <td class="inputDescription">Additional Information: </td>
+                        <td><textarea name="additionalInfo" height="300px;"></textarea></td>
+                </tr>
+
+                <!-- Have You Been To This Restaurant Radio Buttons -->
+                <tr>
+                    <td class="inputDescription">Have you been to the restaurant?: </td> 
+                    <td><input type="radio" name="returningCustomer" value="No" checked/>No <input type="radio" name="returningCustomer" value="Yes"/>Yes</td>
+                </tr>
+                    
+                <!-- Best Day to Contact Checkboxes -->
+                <tr>
+                    <td class="inputDescription">Best days to contact you: </td>
+                    <td><input type="checkbox" name="bestDay" value="Monday"/>M 
+                        <input type="checkbox" name="bestDay" value="Tuesday"/>Tu 
+                        <input type="checkbox" name="bestDay" value="Wednesday"/>W 
+                        <input type="checkbox" name="bestDay" value="Thursday"/>Th 
+                        <input type="checkbox" name="bestDay" value="Friday"/>F </td>
+                </tr>
+
+                <!-- Submit -->
+                <tr>
+                    <td></td>
+                    <td class="inputDescription"><input type="submit"/></td>
+                </tr>
+            </table>
+        </form>
+
+    </body>
+<hr>
+    <foot>
+        <p>
+            <h2 class="addressFoot">1234 Tasty Lane, Chicago, IL, 33669</h2>
+            <h3 class="addressFoot">(556)320-1458</h3>
+        </p>
+    </foot>
+</html>

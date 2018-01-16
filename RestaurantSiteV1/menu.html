@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Taste of Food Menu</title>
+        
+        <link href="restaurantStyles.css"
+              rel="stylesheet"
+              type="text/css" />
+        
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" 
+              rel="stylesheet">
+        
+        <!-- Bootstrap Link -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+
+        <!-- Optional theme -->
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+        <style>
+            body {
+                background: LemonChiffon;
+            }
+
+            table {
+                width: 90%;
+                margin: auto;
+                text-align: center;
+            }
+
+            th {
+                font-size: 1.4em;
+            }
+
+            th.foodName {
+                text-align: center;
+            }
+
+            td.bevPrice {
+                text-align: right;
+            }
+
+            caption {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- The Restaurant's name and Webpage Title -->
+        <h1 id="headerTitle">The Taste of Food</h1>
+    <hr>
+        <!-- The Navigation Bar -->
+        <ul class="nav nav-tabs">
+            <li><a href="home.html"><span class="glyphicon glyphicon-home"></span></a></li>
+            <li class="active"><a href="menu.html">Menu</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    <hr>
+        <!-- Menu Items -->
+        <table class="table">
+            <caption>Food</caption>
+            <tbody>
+            <tr>
+                <th class="foodName">Burger and Fries</th>
+                <th class="foodName">Hot Dog and Chips</th>
+                <th class="foodName">Italian Sausage</th>
+            </tr>
+            <tr>
+                <td>An American Classic!<br/>
+                    $7.95</td>
+                <td>A Summer Classic!<br/>
+                    $7.95</td>
+                <td>An All-American Favorite!<br/>
+                    $8.00</td>
+            </tr>
+            <tr>
+                <th class="foodName">Tenderloin Sandwich and Chips</th>
+                <th class="foodName">House Salad</th>
+                <th class="foodName">Brisket Sandwich</th>
+            </tr>
+            <tr>
+                <td>Really Hits the Spot!<br/>
+                    $8.95</td>
+                <td>On the Lighter Side!<br/>
+                    $6.95</td>
+                <td>A Tasty Treat!<br/>
+                    $9.00</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Beverage Section -->
+        <table class="table" style="text-align:left">
+            <caption>Beverages</caption>
+            <tbody>
+                <tr>
+                    <th>Root Beer</th>
+                    <td class="bevPrice">$3.00</td>
+                </tr>
+                <tr>
+                    <th>Bottled Water</th>
+                    <td class="bevPrice">$1.25</td>
+                </tr>
+                <tr>
+                    <th>Lemonade</th>
+                    <td class="bevPrice">$1.00</td>
+                </tr>
+                <tr>
+                    <th>Iced Tea</th>
+                    <td class="bevPrice">$1.25</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </body>
+<hr>
+    <foot>
+        <p>
+            <h2 class="addressFoot">1234 Tasty Lane, Chicago, IL, 33669</h2>
+            <h3 class="addressFoot">(556)320-1458</h3>
+        </p>
+    </foot>
+</html>

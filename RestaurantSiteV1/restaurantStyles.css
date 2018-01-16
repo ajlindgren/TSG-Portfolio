@@ -1,0 +1,30 @@
+/* Header Styles */
+
+#headerTitle {
+    font-family: 'Montserrat';
+    text-align: center;
+}
+
+a {
+    color: blue;
+    text-decoration: underline;
+}
+
+a:hover {
+    font-weight: bold;
+}
+
+a:visited {
+    color: red;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+
+/* Footer Styles */
+
+.addressFoot {
+    text-align: center;
+}
