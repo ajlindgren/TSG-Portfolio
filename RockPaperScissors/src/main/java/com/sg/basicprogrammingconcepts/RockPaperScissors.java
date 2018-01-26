@@ -33,66 +33,71 @@ public class RockPaperScissors {
         if (numRounds >= 1 && numRounds <= 10) {
             //main gameplay loop
             do {
-                for (int j = 1; j <= numRounds; j++) {
-                    cpuThrowID = cpuThrow.nextInt(2) + 1;
-                    playerThrowID = getThrow("Your Throw (Rock, Paper, or Scissors): ");
-                    //draw condition and counter
-                    if (playerThrowID == cpuThrowID) {
-                        System.out.print("Round " + j + " result: ");
-                        System.out.println("DRAW");
-                        drawCount++;
-                    //win condition and counter
-                    } else if ((playerThrowID == 1 && cpuThrowID == 2) || (playerThrowID == 2 && cpuThrowID == 3) || (playerThrowID == 3 && cpuThrowID == 1)) {
-                        System.out.print("Round " + j + " result: ");
-                        System.out.println("You score!");
-                        playerScore++;
-                    //loss condition and counter
-                    } else {
-                        System.out.print("Round " + j + " result: ");
-                        System.out.println("CPU scores!");
-                        cpuScore++;
+                if (numRounds >= 1 && numRounds <= 10) {
+                    for (int j = 1; j <= numRounds; j++) {
+                        cpuThrowID = cpuThrow.nextInt(3) + 1;
+                        playerThrowID = getThrow("Your Throw (Rock, Paper, or Scissors): ");
+                        //draw condition and counter
+                        if (playerThrowID == cpuThrowID) {
+                            System.out.print("Round " + j + " result: ");
+                            System.out.println("DRAW");
+                            drawCount++;
+                            //win condition and counter
+                        } else if ((playerThrowID == 1 && cpuThrowID == 2) || (playerThrowID == 2 && cpuThrowID == 3) || (playerThrowID == 3 && cpuThrowID == 1)) {
+                            System.out.print("Round " + j + " result: ");
+                            System.out.println("You score!");
+                            playerScore++;
+                            //loss condition and counter
+                        } else {
+                            System.out.print("Round " + j + " result: ");
+                            System.out.println("CPU scores!");
+                            cpuScore++;
+                        }
+
+                        //print scoreboard after each throw
+                        System.out.println("");
+                        System.out.println("Current score: ");
+                        System.out.println("Player: " + playerScore);
+                        System.out.println("CPU: " + cpuScore);
+                        System.out.println("Draws: " + drawCount);
+                        System.out.println("");
+
                     }
 
-                    //print scoreboard after each throw
+                    //print final scoreboard
                     System.out.println("");
-                    System.out.println("Current score: ");
-                    System.out.println("Player: " + playerScore);
-                    System.out.println("CPU: " + cpuScore);
-                    System.out.println("Draws: " + drawCount);
+                    System.out.println("That's it! Final Tally: ");
+                    System.out.println("You scored " + playerScore + " time(s).");
+                    System.out.println("The CPU scored " + cpuScore + " time(s).");
+                    System.out.println("You drew " + drawCount + " time(s).");
                     System.out.println("");
 
-                }
+                    if (playerScore > cpuScore) {
+                        System.out.println("You win!");
+                        System.out.println("");
+                    } else if (cpuScore > playerScore) {
+                        System.out.println("The CPU wins!");
+                        System.out.println("");
+                    } else {
+                        System.out.println("Wow! A dead heat!");
+                        System.out.println("");
+                    }
 
-                //print final scoreboard
-                System.out.println("");
-                System.out.println("That's it! Final Tally: ");
-                System.out.println("You scored " + playerScore + " time(s).");
-                System.out.println("The CPU scored " + cpuScore + " time(s).");
-                System.out.println("You drew " + drawCount + " time(s).");
-                System.out.println("");
-
-                if (playerScore > cpuScore) {
-                    System.out.println("You win!");
-                    System.out.println("");
-                } else if (cpuScore > playerScore) {
-                    System.out.println("The CPU wins!");
-                    System.out.println("");
+                    //play again or exit
+                    System.out.println("Play Again? (Yes/No)");
+                    String insertCoin = sc.next();
+                    if ("Yes".compareToIgnoreCase(insertCoin) == 0) {
+                        playAgain = 1;
+                        System.out.println("How many rounds of RPS to play: ");
+                        numRounds = sc.nextInt();
+                    } else {
+                        playAgain = 0;
+                        System.out.println("");
+                        System.out.println("Thanks for playing!");
+                        System.exit(0);
+                    }
                 } else {
-                    System.out.println("Wow! A dead heat!");
-                    System.out.println("");
-                }
-
-                //play again or exit
-                System.out.println("Play Again? (Yes/No)");
-                String insertCoin = sc.next();
-                if ("Yes".compareToIgnoreCase(insertCoin) == 0) {
-                    playAgain = 1;
-                    System.out.println("How many rounds of RPS to play: ");
-                    numRounds = sc.nextInt();
-                } else {
-                    playAgain = 0;
-                    System.out.println("");
-                    System.out.println("Thanks for playing!");
+                    System.out.println("You must enter a number 1-10.");
                     System.exit(0);
                 }
             } while (playAgain == 1);
@@ -122,7 +127,7 @@ public class RockPaperScissors {
                 System.out.println("That's not an option in this game.");
                 validEntry = false;
             }
-        //if user entry !rock!paper!scissors, repeat prompt
+            //if user entry !rock!paper!scissors, repeat prompt
         } while (!validEntry);
         return playerThrowID;
     }
