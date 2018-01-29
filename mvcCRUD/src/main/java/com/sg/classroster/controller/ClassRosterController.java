@@ -6,77 +6,99 @@
 package com.sg.classroster.controller;
 
 import com.sg.classroster.dao.ClassRosterDao;
-import com.sg.classroster.dao.ClassRosterDaoFileImpl;
+import com.sg.classroster.dao.ClassRosterDaoException;
 import com.sg.classroster.dto.Student;
 import com.sg.classroster.ui.ClassRosterView;
-import com.sg.classroster.ui.UserIO;
-import com.sg.classroster.ui.UserIOConsoleImpl;
 import java.util.List;
 
 /**
- * Our strategy is to create a method that displays the menu, 
- * gets the user's menu choice, 
- * and then calls a method that performs an action based on the user's menu choice.
+ * Our strategy is to create a method that displays the menu, gets the user's
+ * menu choice, and then calls a method that performs an action based on the
+ * user's menu choice.
+ *
  * @author Alex
  */
 public class ClassRosterController {
     
-    ClassRosterDao dao = new ClassRosterDaoFileImpl();
-    ClassRosterView view = new ClassRosterView();
-    private UserIO io = new UserIOConsoleImpl();
+    ClassRosterDao dao;
+    ClassRosterView view;
     
-    public void run(){
+    public ClassRosterController(ClassRosterDao dao, ClassRosterView view) {
+        this.dao = dao;
+        this.view = view;
+    }
+    
+    public void run() {
         boolean keepGoing = true;
         int menuSelection = 0;
-        while (keepGoing){
-           
-            menuSelection = getMenuSelection();
-            
-            switch (menuSelection) {
-                case 1:
-                    listStudents();
-                    break;
-                case 2:
-                    createStudent();
-                    break;
-                case 3:
-                    viewStudent();
-                    break;
-                case 4:
-                    io.print("REMOVE STUDENT");
-                    break;
-                case 5:
-                    keepGoing = false;
-                    break;
-                default:
-                    io.print("UNKNOWN COMMAND");
+        try {
+            while (keepGoing) {
+                
+                menuSelection = getMenuSelection();
+                
+                switch (menuSelection) {
+                    case 1:
+                        listStudents();
+                        break;
+                    case 2:
+                        createStudent();
+                        break;
+                    case 3:
+                        viewStudent();
+                        break;
+                    case 4:
+                        removeStudent();
+                        break;
+                    case 5:
+                        keepGoing = false;
+                        break;
+                    default:
+                        unknownCommand();
+                }
+                
             }
-            
+            exitMessage();
+        } catch (ClassRosterDaoException e) {
+            view.displayErrorMessage(e.getMessage());
         }
-        io.print("GOOD BYE");
-    } 
+    }    
     
-    private int getMenuSelection(){
+    private int getMenuSelection() {
         return view.printMenuAndGetSelection();
     }
     
-    private void createStudent(){
-       view.displayCreateStudentBanner();
-       Student newStudent = view.getNewStudentInfo();
-       dao.addStudent(newStudent.getStudentId(), newStudent);
-       view.displayCreateSuccessBanner();
+    private void createStudent() throws ClassRosterDaoException {
+        view.displayCreateStudentBanner();
+        Student newStudent = view.getNewStudentInfo();
+        dao.addStudent(newStudent.getStudentId(), newStudent);
+        view.displayCreateSuccessBanner();
     }
     
-    private void listStudents() {
+    private void listStudents() throws ClassRosterDaoException {
         view.displayDisplayAllBanner();
         List<Student> studentList = dao.getAllStudents();
         view.displayStudentList(studentList);
     }
     
-    private void viewStudent(){
+    private void viewStudent() throws ClassRosterDaoException {
         view.displayDIsplayStudentBanner();
         String studentId = view.getStudentIdChoice();
         Student student = dao.getStudent(studentId);
         view.displayStudent(student);
+    }
+    
+    private void removeStudent() throws ClassRosterDaoException {
+        view.displayRemoveStudentBanner();
+        String studentId = view.getStudentIdChoice();
+        dao.removeStudent(studentId);
+        view.displayRemoveSuccessBanner();
+    }
+    
+    private void unknownCommand() {
+        view.displayUnknownCommandBanner();
+    }
+    
+    private void exitMessage() {
+        view.displayExitBanner();
     }
 }
