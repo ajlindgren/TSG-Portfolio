@@ -12,11 +12,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -78,7 +82,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
             currentTokens = currentLine.split(DELIMITER);
             DVD currentDVD = new DVD(currentTokens[0]);
             currentDVD.setDirectorName(currentTokens[1]);
-            currentDVD.setReleaseDate(currentTokens[2]);
+            currentDVD.setReleaseDate(LocalDate.parse(currentTokens[2], DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             currentDVD.setStudio(currentTokens[3]);
             currentDVD.setMpaaRating(currentTokens[4]);
             currentDVD.setUserNote(currentTokens[5]);
@@ -90,6 +94,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
     
     private void writeLibrary() throws DVDLibraryDaoException {
         PrintWriter out;
+        List<DVD> dvdList = this.getAllDVDs();
         
         try {
             out = new PrintWriter(new FileWriter(LIBRARY_FILE));
@@ -97,7 +102,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
             throw new DVDLibraryDaoException("Could not save library data.", e);
         }
         
-        List<DVD> dvdList = this.getAllDVDs();
+        
         for (DVD currentDVD : dvdList) {
             out.println(currentDVD.getTitle() + DELIMITER
                         + currentDVD.getDirectorName() + DELIMITER
@@ -109,5 +114,77 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
         }
         out.close();
     }
+
+    @Override
+    public List<DVD> getDVDsNewerThan(int ageInYears) throws DVDLibraryDaoException {
+        return dvds.values()
+                        .stream()
+                        .filter(d -> d.getDVDAge() <= ageInYears)
+                        .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DVD> getDVDsByMpaaRating(String mpaaRating) throws DVDLibraryDaoException {
+        return dvds.values()
+                        .stream()
+                        .filter(d -> d.getMpaaRating().equalsIgnoreCase(mpaaRating))
+                        .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DVD> getDVDsByDirector(String director) throws DVDLibraryDaoException {
+        return dvds.values()
+                        .stream()
+                        .filter(s -> s.getDirectorName().equalsIgnoreCase(director))
+                        .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DVD> getDVDsByStudio(String studio) throws DVDLibraryDaoException {
+        return dvds.values()
+                        .stream()
+                        .filter(s -> s.getStudio().equalsIgnoreCase(studio))
+                        .collect(Collectors.toList());
+    }
+
+    @Override
+    public double getAverageDVDAge() throws DVDLibraryDaoException {
+        return dvds.values()
+                        .stream()
+                        .mapToLong(s -> s.getDVDAge())
+                      //.mapToLong(DVD::getDVDAge)
+                        .average()
+                        .getAsDouble();
+    }
+
+    @Override
+    public DVD getNewestDVD() throws DVDLibraryDaoException {
+        DVD newest = dvds.values()
+                    .stream()
+                    .collect(Collectors.minBy(Comparator.comparing((DVD::getDVDAge))))
+                  //.collect(Collectors.minBy(d -> d.getDVDAge());
+                    .get();
+        return newest;
+    }
+
+    @Override
+    public DVD getOldestDVD() throws DVDLibraryDaoException {
+        return dvds.values()
+                    .stream()
+                    .collect(Collectors.maxBy(Comparator.comparing((DVD::getDVDAge))))
+                    .get();
+    }
+
+    @Override
+    public double getAverageUserNotes() throws DVDLibraryDaoException {
+        return dvds.values()
+                        .stream()
+                        .mapToLong(s -> s.getUserNote().length())
+                      //.mapToLong(DVD::getUserNote.length()) ??????????
+                        .average()
+                        .getAsDouble();
+    }
+    
+    
     
 }

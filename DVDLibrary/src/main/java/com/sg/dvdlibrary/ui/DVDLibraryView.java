@@ -6,6 +6,9 @@
 package com.sg.dvdlibrary.ui;
 
 import com.sg.dvdlibrary.dto.DVD;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 /**
@@ -23,14 +26,15 @@ public class DVDLibraryView {
     public DVD getNewDVDInfo() {
         String dvdTitle = io.readString("Please enter DVD Title");
         String directorName = io.readString("Please enter the Director's Name");
-        String releaseDate = io.readString("Please enter DVD Release Date (mm/dd/yyyy)");
+        String releaseDate = io.readString("Please enter DVD Release Date (yyyy-MM-dd)");
+        LocalDate ldRelease = LocalDate.parse(releaseDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String studio = io.readString("Please enter the DVD's Publishing Studio");
         String mpaaRating = io.readString("Please enter the DVD's MPAA Rating");
         String userNote = io.readString("Please enter a personal note for this DVD");
 
         DVD currentDVD = new DVD(dvdTitle);
         currentDVD.setDirectorName(directorName);
-        currentDVD.setReleaseDate(releaseDate);
+        currentDVD.setReleaseDate(ldRelease);
         currentDVD.setStudio(studio);
         currentDVD.setMpaaRating(mpaaRating);
         currentDVD.setUserNote(userNote);
@@ -39,13 +43,14 @@ public class DVDLibraryView {
 
     public DVD getEditDVDInfo(DVD currentDVD) {
         String directorName = io.readString("Please enter the Director's Name");
-        String releaseDate = io.readString("Please enter DVD Release Date (mm/dd/yyyy)");
+        String releaseDate = io.readString("Please enter DVD Release Date (yyyy-MM-dd)");
+        LocalDate ldRelease = LocalDate.parse(releaseDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String studio = io.readString("Please enter the DVD's Publishing Studio");
         String mpaaRating = io.readString("Please enter the DVD's MPAA Rating");
         String userNote = io.readString("Please enter a personal note for this DVD");
 
         currentDVD.setDirectorName(directorName);
-        currentDVD.setReleaseDate(releaseDate);
+        currentDVD.setReleaseDate(ldRelease);
         currentDVD.setStudio(studio);
         currentDVD.setMpaaRating(mpaaRating);
         currentDVD.setUserNote(userNote);
@@ -59,9 +64,25 @@ public class DVDLibraryView {
         io.print("3. Add a DVD to the Library");
         io.print("4. Remove a DVD from the Library");
         io.print("5. Edit the info for a DVD in the Library");
-        io.print("6. Exit");
+        io.print("6. View Library using Filters");
+        io.print("7. Exit");
 
-        return io.readInt("Please select from the above choices.", 1, 6);
+        return io.readInt("Please select from the above choices.", 1, 7);
+    }
+    
+    public int printFilterMenuAndGetSelection() {
+        io.print("1. List all DVDs newer than 10 years");
+        io.print("2. List all DVDs newer than 20 years");
+        io.print("3. List all DVDs by Director");
+        io.print("4. List all DVDs by Studio");
+        io.print("5. List all DVDs by MPAA Rating");
+        io.print("6. Display the Newest DVD in the Library");
+        io.print("7. Display the Oldest DVD in the Library");
+        io.print("8. View the Average Age of DVDs in the Library");
+        io.print("9. View the Average User Note Length for each DVD in the Library");
+        io.print("10. Return to the Main Menu");
+        
+        return io.readInt("Please select from the above choices.", 1, 10);
     }
 
     public void displayAddDVDBanner() {
@@ -141,5 +162,25 @@ public class DVDLibraryView {
     public void displayErrorMessage(String errorMsg) {
         io.print("-~= ERROR =~-");
         io.print(errorMsg);
+    }
+    
+    public String getDirectorName() {
+        return io.readString("Director's Name:");
+    }
+    
+    public String getStudio() {
+        return io.readString("Publishing Studio:");
+    }
+    
+    public String getMpaaRating() {
+        return io.readString("MPAA Rating:");
+    }
+    
+    public void displayAverageDVDAge(double avg) {
+        System.out.println(avg);
+    }
+    
+    public void displayAverageUserNotes(double avg) {
+        System.out.println(avg);
     }
 }

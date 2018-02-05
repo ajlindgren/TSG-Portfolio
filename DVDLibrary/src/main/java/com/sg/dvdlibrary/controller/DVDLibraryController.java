@@ -51,6 +51,9 @@ public class DVDLibraryController {
                         editDVD();
                         break;
                     case 6:
+                        filterMenu();
+                        break;
+                    case 7:
                         keepGoing = false;
                         break;
                     default:
@@ -63,8 +66,58 @@ public class DVDLibraryController {
         }        
     }
     
+    private void filterMenu() {
+        boolean keepGoing = true;
+        int menuSelection = 0;
+        try {
+        while (keepGoing) {
+            
+            menuSelection = getFilterMenuSelection();
+            
+            switch (menuSelection) {
+                case 1:
+                    filterNewerThan10();
+                    break;
+                case 2:
+                    filterNewerThan20();
+                    break;
+                case 3:
+                    filterByDirector();
+                    break;
+                case 4:
+                    filterByStudio();
+                    break;
+                case 5:
+                    filterByMpaaRating();
+                    break;
+                case 6:
+                    filterNewestDVD();
+                    break;
+                case 7:
+                    filterOldestDVD();
+                    break;
+                case 8:
+                    filterAverageDVDAge();
+                case 9:
+                    filterAverageUserNoteLength();
+                case 10:
+                    keepGoing = false;
+                    break;
+                default:
+                    unknownCommand();
+            }
+        }
+        } catch (DVDLibraryDaoException e) {
+            view.displayErrorMessage(e.getMessage());
+        }
+    }
+    
     private int getMenuSelection() {
         return view.printMenuAndGetSelection();
+    }
+    
+    private int getFilterMenuSelection() {
+        return view.printFilterMenuAndGetSelection();
     }
     
     private void addDVD() throws DVDLibraryDaoException {
@@ -109,12 +162,60 @@ public class DVDLibraryController {
             view.displayEditSuccessBanner();
     }
     
-    private void unknownCommand() {
+    private void unknownCommand() throws DVDLibraryDaoException {
         view.displayUnknownCommandBanner();
     }
     
-    private void exitMessage() {
+    private void exitMessage() throws DVDLibraryDaoException {
         view.displayExitBanner();
+    }
+
+    private void filterNewerThan10() throws DVDLibraryDaoException {
+        List<DVD> dvdList = dao.getDVDsNewerThan(10);
+        view.displayDVDList(dvdList);
+    }
+
+    private void filterNewerThan20() throws DVDLibraryDaoException {
+        List<DVD> dvdList = dao.getDVDsNewerThan(20);
+        view.displayDVDList(dvdList);
+    }
+
+    private void filterByDirector() throws DVDLibraryDaoException {
+        String director = view.getDirectorName();
+        List<DVD> dvdList = dao.getDVDsByDirector(director);
+        view.displayDVDList(dvdList);
+    }
+
+    private void filterByStudio() throws DVDLibraryDaoException {
+        String studio = view.getStudio();
+        List<DVD> dvdList = dao.getDVDsByStudio(studio);
+        view.displayDVDList(dvdList);
+    }
+
+    private void filterByMpaaRating() throws DVDLibraryDaoException {
+        String mpaaRating = view.getMpaaRating();
+        List<DVD> dvdList = dao.getDVDsByDirector(mpaaRating);
+        view.displayDVDList(dvdList);
+    }
+
+    private void filterNewestDVD() throws DVDLibraryDaoException {
+        DVD dvd = dao.getNewestDVD();
+        view.displayDVD(dvd);
+    }
+
+    private void filterOldestDVD() throws DVDLibraryDaoException {
+        DVD dvd = dao.getOldestDVD();
+        view.displayDVD(dvd);
+    }
+
+    private void filterAverageDVDAge() throws DVDLibraryDaoException {
+        double avg = dao.getAverageDVDAge();
+        view.displayAverageDVDAge(avg);
+    }
+
+    private void filterAverageUserNoteLength() throws DVDLibraryDaoException {
+        double avg = dao.getAverageUserNotes();
+        view.displayAverageUserNotes(avg);
     }
     
 }

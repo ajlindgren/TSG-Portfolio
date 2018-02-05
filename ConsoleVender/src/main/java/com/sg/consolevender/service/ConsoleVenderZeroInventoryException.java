@@ -3,20 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sg.classroster.dao;
+package com.sg.consolevender.service;
 
 /**
  *
  * @author Alex
  */
-public class ClassRosterDaoException extends Exception {
+public class ConsoleVenderZeroInventoryException extends Exception {
     
-    public ClassRosterDaoException(String message){
+    public ConsoleVenderZeroInventoryException(String message) {
         super(message);
     }
     
-    public ClassRosterDaoException(String message, Throwable cause){
+    public ConsoleVenderZeroInventoryException(String message, Throwable cause) {
         super(message, cause);
     }
-    
 }

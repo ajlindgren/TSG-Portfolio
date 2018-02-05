@@ -5,33 +5,39 @@
  */
 package com.sg.dvdlibrary.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  *
  * @author Alex
  */
 public class DVD {
    
-    private final String TITLE;
+    private final String title;
     private String directorName;
-    private String releaseDate;
+    private LocalDate releaseDate;
     private String studio;
     private String mpaaRating;
     private String userNote;   
     
     public DVD(String title) {
-        this.TITLE = title;
+        this.title = title;
     }
 
     //Title is a read-only field - the Title of a DVD object is set permanently upon instantiation.
     public String getTitle() {
-        return TITLE;
+        return title;
     }                           
 
-    public String getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -65,6 +71,11 @@ public class DVD {
 
     public void setUserNote(String userNote) {
         this.userNote = userNote;
+    }
+    
+    public long getDVDAge() {
+        Period p = releaseDate.until(LocalDate.now());
+        return p.getYears();
     }
     
 }

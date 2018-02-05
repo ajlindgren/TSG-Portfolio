@@ -7,6 +7,7 @@ package com.sg.dvdlibrary.dao;
 
 import com.sg.dvdlibrary.dto.DVD;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -57,4 +58,21 @@ public interface DVDLibraryDao {
      * @param dvdTitle title of DVD to be edited
      */
     DVD editDVD(String dvdTitle, DVD dvd) throws DVDLibraryDaoException;
+    
+    List<DVD> getDVDsNewerThan(int ageInYears) throws DVDLibraryDaoException;
+    
+    List<DVD> getDVDsByMpaaRating(String mpaaRating) throws DVDLibraryDaoException;
+    
+    //while searching by director, DVDs should be sorted into separate data structures by MPAA rating
+    List<DVD> getDVDsByDirector(String director) throws DVDLibraryDaoException;
+    
+    List<DVD> getDVDsByStudio(String studio) throws DVDLibraryDaoException;
+    
+    double getAverageDVDAge() throws DVDLibraryDaoException;
+    
+    DVD getNewestDVD() throws DVDLibraryDaoException;
+    
+    DVD getOldestDVD() throws DVDLibraryDaoException;
+    
+    double getAverageUserNotes() throws DVDLibraryDaoException;
 }
