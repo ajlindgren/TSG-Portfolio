@@ -9,14 +9,13 @@ package com.sg.consolevender.service;
  *
  * @author Alex
  */
-public class ConsoleVenderDataValidationException extends Exception {
+public class ConsoleVenderInsufficientFundsException extends Exception{
     
-    public ConsoleVenderDataValidationException(String message) {
+    public ConsoleVenderInsufficientFundsException(String message) {
         super(message);
     }
     
-    public ConsoleVenderDataValidationException(String message, Throwable cause) {
+    public ConsoleVenderInsufficientFundsException(String message, Throwable cause) {
         super(message, cause);
     }
-    
 }

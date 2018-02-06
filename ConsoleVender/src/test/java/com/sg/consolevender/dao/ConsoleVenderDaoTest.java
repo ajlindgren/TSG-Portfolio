@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
  */
 public class ConsoleVenderDaoTest {
     
-    private ConsoleVenderDao dao = new ConsoleVenderDaoStubImpl();
+    private ConsoleVenderDao dao = new ConsoleVenderDaoFileImpl();
     
     public ConsoleVenderDaoTest() {
     }
@@ -50,7 +50,7 @@ public class ConsoleVenderDaoTest {
     public void testGetAllProducts() throws Exception {
         List<Product> fromDao = dao.getAllProducts();
         
-        assertEquals(3, fromDao.size());
+        assertEquals(5, fromDao.size());
     }
 
     /**
@@ -58,27 +58,22 @@ public class ConsoleVenderDaoTest {
      */
     @Test
     public void testGetProduct() throws Exception {
-        Product product = new Product("TEST1");
-        product.setProductPrice(BigDecimal.ONE);
-        product.setInStock(1);
+        Product product = new Product("TEST0");
+        product.setProductPrice(BigDecimal.ZERO);
+        product.setInStock(0);
         
-        Product fromDao = dao.getProduct("TEST1");
+        Product fromDao = dao.getProduct("TEST0");
         
         assertEquals(product, fromDao);
     }
-
-    /**
-     * Test of loadInventory method, of class ConsoleVenderDao.
-     */
-    @Test
-    public void testLoadInventory() throws Exception {
-    }
-
-    /**
-     * Test of writeInventory method, of class ConsoleVenderDao.
-     */
-    @Test
-    public void testWriteInventory() throws Exception {
-    }
     
+    @Test
+    public void testUpdateInventory() throws Exception {
+        Product product = new Product("TEST1");
+        product.setProductPrice(BigDecimal.ONE);
+        product.setInStock(0);
+        
+        assertEquals(dao.updateInventory(product), product);
+    }
+
 }

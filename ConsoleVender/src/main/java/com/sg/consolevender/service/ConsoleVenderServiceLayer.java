@@ -19,7 +19,7 @@ public interface ConsoleVenderServiceLayer {
     
     List<Product> getAllProducts() throws ConsoleVenderPersistenceException;
     
-    Product getProduct(String productName) throws ConsoleVenderPersistenceException;
+    Product getProduct(String productName) throws ConsoleVenderPersistenceException, ConsoleVenderZeroInventoryException;
 
     Change deposit5(Change change);
 
@@ -31,7 +31,7 @@ public interface ConsoleVenderServiceLayer {
 
     Change depositNickel(Change change);
     
-    BigDecimal[] calcChange(Product product, Change change);
+    BigDecimal[] calcChange(Product product, Change change) throws ConsoleVenderInsufficientFundsException;
     
     BigDecimal[] calcRefund(Change change);
 

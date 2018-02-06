@@ -103,10 +103,10 @@ public class ConsoleVenderView {
         io.print("");
     }
 
-    public void displayInsufficientFundsPrompt(Product product) {
+    public void displayInsufficientFundsPrompt() {
         io.print("");
         io.print("Insufficient Funds!");
-        io.print("Please insert additional funds to purchase the " + product.getProductName() + ".");
+        io.print("Please insert additional funds to purchase the product.");
     }
     
     public void displayZeroInventory(Product product) {

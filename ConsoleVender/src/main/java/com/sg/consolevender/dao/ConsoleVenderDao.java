@@ -18,7 +18,6 @@ public interface ConsoleVenderDao {
     
     Product getProduct(String productName) throws ConsoleVenderPersistenceException;
     
-    void loadInventory() throws ConsoleVenderPersistenceException;
+    Product updateInventory(Product product) throws ConsoleVenderPersistenceException;
     
-    void writeInventory() throws ConsoleVenderPersistenceException;
 }

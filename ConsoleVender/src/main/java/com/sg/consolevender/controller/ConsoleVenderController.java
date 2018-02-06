@@ -5,17 +5,14 @@
  */
 package com.sg.consolevender.controller;
 
-import com.sg.consolevender.dao.ConsoleVenderDao;
-import com.sg.consolevender.dao.ConsoleVenderDaoFileImpl;
 import com.sg.consolevender.dao.ConsoleVenderPersistenceException;
 import com.sg.consolevender.dto.Change;
 import com.sg.consolevender.dto.Product;
+import com.sg.consolevender.service.ConsoleVenderInsufficientFundsException;
 import com.sg.consolevender.service.ConsoleVenderServiceLayer;
+import com.sg.consolevender.service.ConsoleVenderZeroInventoryException;
 import com.sg.consolevender.ui.ConsoleVenderView;
-import com.sg.consolevender.ui.UserIO;
-import com.sg.consolevender.ui.UserIOConsoleImpl;
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  *
@@ -123,21 +120,18 @@ public class ConsoleVenderController {
         view.displayCurrentChange(service.depositNickel(change));
     }
 
-    private void purchaseSelection(Change change) throws ConsoleVenderPersistenceException {
+    //move validations to Service Layer, create exceptions to be thrown FROM service, and catch them here in Controller.
+    private void purchaseSelection(Change change) {
+        try {
         Product product = service.getProduct(view.getPurchaseSelection());
-        if (product != null) {
-            if (product.getInStock() <= 0) {
-                view.displayZeroInventory(product);
-            } else if (change.getTotal().compareTo(product.getProductPrice()) >= 0) {
-                view.displayChange(service.calcChange(product, change));
+        view.displayChange(service.calcChange(product, change));
                 change.setTotal(new BigDecimal("0.00"));
                 service.updateStock(product);
-            } else {
-                view.displayInsufficientFundsPrompt(product);
-                view.displayCurrentChange(change);
-            }
-        } else {
+        } catch (ConsoleVenderPersistenceException | ConsoleVenderZeroInventoryException e) {
             view.displayNoSuchProduct();
+        } catch (ConsoleVenderInsufficientFundsException e) {
+            view.displayInsufficientFundsPrompt();
+            view.displayCurrentChange(change);
         }
     }
 

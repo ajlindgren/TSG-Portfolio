@@ -44,8 +44,16 @@ public class ConsoleVenderDaoFileImpl implements ConsoleVenderDao {
         return products.get(productName);
     }
     
+    //needs an updateInventory public method, loadInventory and writeInventory need to be private.
+    
     @Override
-    public void loadInventory() throws ConsoleVenderPersistenceException {
+    public Product updateInventory(Product product) throws ConsoleVenderPersistenceException {
+        Product nullCheck = products.replace(product.getProductName(), product);
+        writeInventory();
+        return nullCheck;
+    }
+    
+    private void loadInventory() throws ConsoleVenderPersistenceException {
         Scanner scanner;
         BigDecimal bigD = new BigDecimal(0);
 
@@ -73,8 +81,7 @@ public class ConsoleVenderDaoFileImpl implements ConsoleVenderDao {
         scanner.close();
     }
     
-    @Override
-    public void writeInventory() throws ConsoleVenderPersistenceException {
+    private void writeInventory() throws ConsoleVenderPersistenceException {
         PrintWriter out;
 
         try {
