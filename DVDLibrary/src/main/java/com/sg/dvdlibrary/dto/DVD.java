@@ -78,4 +78,9 @@ public class DVD {
         return p.getYears();
     }
     
+    @Override
+    public String toString() {
+        return title;
+    }
+    
 }

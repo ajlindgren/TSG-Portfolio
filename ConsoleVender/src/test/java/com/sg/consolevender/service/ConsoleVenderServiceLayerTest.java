@@ -5,6 +5,8 @@
  */
 package com.sg.consolevender.service;
 
+import com.sg.consolevender.dao.ConsoleVenderAuditDao;
+import com.sg.consolevender.dao.ConsoleVenderAuditDaoFileImpl;
 import com.sg.consolevender.dao.ConsoleVenderDao;
 import com.sg.consolevender.dao.ConsoleVenderDaoStubImpl;
 import com.sg.consolevender.dto.Change;
@@ -31,7 +33,8 @@ public class ConsoleVenderServiceLayerTest {
     
     public ConsoleVenderServiceLayerTest() {
         ConsoleVenderDao dao = new ConsoleVenderDaoStubImpl();
-        service = new ConsoleVenderServiceLayerImpl(dao);
+        ConsoleVenderAuditDao auditDao = new ConsoleVenderAuditDaoFileImpl();
+        service = new ConsoleVenderServiceLayerImpl(dao, auditDao);
     }
     
     

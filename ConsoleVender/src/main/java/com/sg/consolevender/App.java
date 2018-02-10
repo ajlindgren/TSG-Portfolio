@@ -6,13 +6,8 @@
 package com.sg.consolevender;
 
 import com.sg.consolevender.controller.ConsoleVenderController;
-import com.sg.consolevender.dao.ConsoleVenderDao;
-import com.sg.consolevender.dao.ConsoleVenderDaoFileImpl;
-import com.sg.consolevender.service.ConsoleVenderServiceLayer;
-import com.sg.consolevender.service.ConsoleVenderServiceLayerImpl;
-import com.sg.consolevender.ui.ConsoleVenderView;
-import com.sg.consolevender.ui.UserIO;
-import com.sg.consolevender.ui.UserIOConsoleImpl;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -21,11 +16,15 @@ import com.sg.consolevender.ui.UserIOConsoleImpl;
 public class App {
 
     public static void main(String[] args) {
-        UserIO myIo = new UserIOConsoleImpl();
-        ConsoleVenderView myView = new ConsoleVenderView(myIo);
-        ConsoleVenderDao myDao = new ConsoleVenderDaoFileImpl();
-        ConsoleVenderServiceLayer myService = new ConsoleVenderServiceLayerImpl(myDao);
-        ConsoleVenderController controller = new ConsoleVenderController(myService, myView);
+//        UserIO myIo = new UserIOConsoleImpl();
+//        ConsoleVenderView myView = new ConsoleVenderView(myIo);
+//        ConsoleVenderDao myDao = new ConsoleVenderDaoFileImpl();
+//        ConsoleVenderServiceLayer myService = new ConsoleVenderServiceLayerImpl(myDao);
+//        ConsoleVenderController controller = new ConsoleVenderController(myService, myView);
+//        controller.run();
+
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ConsoleVenderController controller = ctx.getBean("controller", ConsoleVenderController.class);
         controller.run();
     }
 }

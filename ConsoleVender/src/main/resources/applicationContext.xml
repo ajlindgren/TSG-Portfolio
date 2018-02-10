@@ -16,39 +16,52 @@
           http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
     <!-- Bean definitions go here -->
-    <bean id="userIO" class="com.sg.classroster.ui.UserIOConsoleImpl"/>
-    <bean id="view" class="com.sg.classroster.ui.ClassRosterView">
+    <bean id="userIO" class="com.sg.consolevender.ui.UserIOConsoleImpl"/>
+    <bean id="view" class="com.sg.consolevender.ui.ConsoleVenderView">
         <constructor-arg ref="userIO"/>
     </bean>
     
-    <bean id="dao" class="com.sg.classroster.dao.ClassRosterDaoFileImpl"/>
-    <bean id="auditDao" class="com.sg.classroster.dao.ClassRosterAuditDaoFileImpl"/>
-    <bean id="service" class="com.sg.classroster.service.ClassRosterServiceLayerImpl">
+    <bean id="dao" class="com.sg.consolevender.dao.ConsoleVenderDaoFileImpl"/>
+    <bean id="auditDao" class="com.sg.consolevender.dao.ConsoleVenderAuditDaoFileImpl"/>
+    <bean id="service" class="com.sg.consolevender.service.ConsoleVenderServiceLayerImpl">
         <constructor-arg ref="dao"/>
         <constructor-arg ref="auditDao"/>
     </bean>
     
-    <bean id="loggingAdvice" class="com.sg.classroster.advice.LoggingAdvice">
+    <bean id="loggingAdvice" class="com.sg.consolevender.advice.LoggingAdvice">
         <constructor-arg ref="auditDao"/>
     </bean>
     
-    <bean id="controller" class="com.sg.classroster.controller.ClassRosterController">
+    <bean id="controller" class="com.sg.consolevender.controller.ConsoleVenderController">
         <constructor-arg ref="service"/>
         <constructor-arg ref="view"/>
     </bean>
     
     <aop:config>
         <aop:aspect ref="loggingAdvice">
+            
             <aop:after-returning 
                 method="createAuditEntry"
-                pointcut="execution(* com.sg.classroster.service.ClassRosterServiceLayer.removeStudent(..))"
+                pointcut="execution(* com.sg.consolevender.dao.ConsoleVenderDao.updateInventory(..))"
             />
             
-            <aop:after-returning
-                method="createAuditEntry"
-                pointcut="execution(* com.sg.classroster.service.ClassRosterServiceLayer.createStudent(..))"
+            
+            <aop:after-throwing
+                method="createAuditEntryException"
+                pointcut="execution(* com.sg.consolevender.service.ConsoleVenderServiceLayerImpl.getProduct(..))"
+                throwing="ex"
             />
+            
+            
+            <aop:after-throwing
+                method="createAuditEntryException"
+                pointcut="execution(* com.sg.consolevender.service.ConsoleVenderServiceLayerImpl.calcChange(..))"
+                throwing="ex"
+            />
+            
         </aop:aspect>
     </aop:config>
+    
+    <aop:aspectj-autoproxy/>
    
 </beans>

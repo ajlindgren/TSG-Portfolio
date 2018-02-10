@@ -5,6 +5,7 @@
  */
 package com.sg.consolevender.service;
 
+import com.sg.consolevender.dao.ConsoleVenderAuditDao;
 import com.sg.consolevender.dao.ConsoleVenderDao;
 import com.sg.consolevender.dao.ConsoleVenderPersistenceException;
 import com.sg.consolevender.dto.Change;
@@ -23,9 +24,11 @@ import java.util.stream.Collectors;
 public class ConsoleVenderServiceLayerImpl implements ConsoleVenderServiceLayer {
 
     ConsoleVenderDao dao;
+    ConsoleVenderAuditDao auditDao;
 
-    public ConsoleVenderServiceLayerImpl(ConsoleVenderDao dao) {
+    public ConsoleVenderServiceLayerImpl(ConsoleVenderDao dao, ConsoleVenderAuditDao auditDao) {
         this.dao = dao;
+        this.auditDao = auditDao;
     }
 
     @Override

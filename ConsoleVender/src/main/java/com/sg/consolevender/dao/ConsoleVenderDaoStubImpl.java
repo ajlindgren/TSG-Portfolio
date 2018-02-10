@@ -61,12 +61,7 @@ public class ConsoleVenderDaoStubImpl implements ConsoleVenderDao {
     }
 
     @Override
-    public void loadInventory() throws ConsoleVenderPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void writeInventory() throws ConsoleVenderPersistenceException {
+    public Product updateInventory(Product product) throws ConsoleVenderPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

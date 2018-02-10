@@ -39,8 +39,8 @@ public class ClassRosterServiceLayerImpl implements ClassRosterServiceLayer {
         //We passed all our business rules checks so go ahead and persist the Student object
         dao.addStudent(student.getStudentId(), student);
         
-        //The student was successfully created, write to Audit Log
-        auditDao.writeAuditEntry("Student " + student.getStudentId() + " CREATED.");
+//        //The student was successfully created, write to Audit Log
+//        auditDao.writeAuditEntry("Student " + student.getStudentId() + " CREATED.");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ClassRosterServiceLayerImpl implements ClassRosterServiceLayer {
     @Override
     public Student removeStudent(String studentId) throws ClassRosterPersistenceException {
         Student removedStudent = dao.removeStudent(studentId);
-        auditDao.writeAuditEntry("Student " + studentId + " REMOVED.");
+//        auditDao.writeAuditEntry("Student " + studentId + " REMOVED.");
         return removedStudent;
     }
     

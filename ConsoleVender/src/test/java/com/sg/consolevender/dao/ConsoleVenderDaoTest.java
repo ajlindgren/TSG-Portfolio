@@ -46,7 +46,7 @@ public class ConsoleVenderDaoTest {
     /**
      * Test of getAllProducts method, of class ConsoleVenderDao.
      */
-    @Test
+    //@Test
     public void testGetAllProducts() throws Exception {
         List<Product> fromDao = dao.getAllProducts();
         
@@ -56,7 +56,7 @@ public class ConsoleVenderDaoTest {
     /**
      * Test of getProduct method, of class ConsoleVenderDao.
      */
-    @Test
+    //@Test
     public void testGetProduct() throws Exception {
         Product product = new Product("TEST0");
         product.setProductPrice(BigDecimal.ZERO);
@@ -67,7 +67,7 @@ public class ConsoleVenderDaoTest {
         assertEquals(product, fromDao);
     }
     
-    @Test
+    //@Test
     public void testUpdateInventory() throws Exception {
         Product product = new Product("TEST1");
         product.setProductPrice(BigDecimal.ONE);
