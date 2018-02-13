@@ -11,6 +11,6 @@ package com.sg.floormaster.dao;
  */
 public class FloorMasterAuditDaoFileImpl implements FloorMasterAuditDao {
  
-    public static final String AUDIT_FILE = "audit.txt";
+    public static final String AUDIT_FILE = "DataFiles/audit.txt";
     
 }

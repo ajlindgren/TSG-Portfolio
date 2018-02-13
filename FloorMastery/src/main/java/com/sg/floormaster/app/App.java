@@ -15,7 +15,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class App {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         FloorMasterController controller = ctx.getBean("controller", FloorMasterController.class);
 

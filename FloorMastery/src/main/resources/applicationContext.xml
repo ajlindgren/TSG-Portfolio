@@ -21,10 +21,15 @@
         <constructor-arg ref="userIO"/>
     </bean>
     
-    <bean id="dao" class="com.sg.floormaster.dao.FloorMasterDaoFileImpl"/>
+    <bean id="orderDao" class="com.sg.floormaster.dao.FloorMasterOrderDaoFileImpl"/>
+    <bean id="materialDao" class="com.sg.floormaster.dao.FloorMasterMaterialDaoFileImpl"/>
+    <bean id="taxDao" class="com.sg.floormaster.dao.FloorMasterTaxDaoFileImpl"/>
     <bean id="auditDao" class="com.sg.floormaster.dao.FloorMasterAuditDaoFileImpl"/>
+    
     <bean id="service" class="com.sg.floormaster.service.FloorMasterServiceLayerImpl">
-        <constructor-arg ref="dao"/>
+        <constructor-arg ref="orderDao"/>
+        <constructor-arg ref="materialDao"/>
+        <constructor-arg ref="taxDao"/>
         <constructor-arg ref="auditDao"/>
     </bean>
     

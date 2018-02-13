@@ -6,7 +6,9 @@
 package com.sg.floormaster.service;
 
 import com.sg.floormaster.dao.FloorMasterAuditDao;
-import com.sg.floormaster.dao.FloorMasterDao;
+import com.sg.floormaster.dao.FloorMasterMaterialDao;
+import com.sg.floormaster.dao.FloorMasterOrderDao;
+import com.sg.floormaster.dao.FloorMasterTaxDao;
 
 /**
  *
@@ -14,11 +16,15 @@ import com.sg.floormaster.dao.FloorMasterDao;
  */
 public class FloorMasterServiceLayerImpl implements FloorMasterServiceLayer {
     
-    FloorMasterDao dao;
+    FloorMasterOrderDao orderDao;
+    FloorMasterMaterialDao materialDao;
+    FloorMasterTaxDao taxDao;
     FloorMasterAuditDao auditDao;
 
-    public FloorMasterServiceLayerImpl(FloorMasterDao dao, FloorMasterAuditDao auditDao) {
-        this.dao = dao;
+    public FloorMasterServiceLayerImpl(FloorMasterOrderDao orderDao, FloorMasterMaterialDao materialDao, FloorMasterTaxDao taxDao, FloorMasterAuditDao auditDao) {
+        this.orderDao = orderDao;
+        this.materialDao = materialDao;
+        this.taxDao = taxDao;
         this.auditDao = auditDao;
     }
     

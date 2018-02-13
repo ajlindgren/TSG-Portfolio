@@ -5,6 +5,7 @@
  */
 package com.sg.floormaster.controller;
 
+import com.sg.floormaster.dao.FloorMasterOrderDao;
 import com.sg.floormaster.service.FloorMasterServiceLayer;
 import com.sg.floormaster.ui.FloorMasterView;
 
@@ -22,8 +23,8 @@ public class FloorMasterController {
         this.view = view;
     }
     
-    public void run() {
-        
+    public void run(){
+    
     }
     
 }
