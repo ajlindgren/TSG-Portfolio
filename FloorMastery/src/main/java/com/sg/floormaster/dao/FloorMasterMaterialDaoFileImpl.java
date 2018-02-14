@@ -41,12 +41,7 @@ public class FloorMasterMaterialDaoFileImpl implements FloorMasterMaterialDao {
     }
     
     @Override
-    public void saveToFile() throws Exception {
-        writeMaterials();
-    }
-    
-    @Override
-    public void loadFromFile() throws Exception {
+    public void loadMaterialFile() throws Exception {
         loadMaterials();
     }
     

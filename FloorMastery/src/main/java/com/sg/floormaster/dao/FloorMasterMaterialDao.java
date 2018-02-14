@@ -16,7 +16,6 @@ public interface FloorMasterMaterialDao {
     
     List<Material> getAllMaterials() throws Exception;
     Material getMaterial(String materialType) throws Exception;
-    void saveToFile() throws Exception;
-    void loadFromFile() throws Exception;
+    void loadMaterialFile() throws Exception;
     
 }

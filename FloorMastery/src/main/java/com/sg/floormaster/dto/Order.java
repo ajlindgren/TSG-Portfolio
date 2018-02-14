@@ -6,6 +6,7 @@
 package com.sg.floormaster.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -30,6 +31,7 @@ public class Order {
     private BigDecimal laborCost;
     private BigDecimal tax;
     private BigDecimal total;
+    private LocalDate orderDate;
     
     public Order() {
         
@@ -130,22 +132,31 @@ public class Order {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
+    
+    public LocalDate getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
+    }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 23 * hash + this.orderNumber;
-        hash = 23 * hash + Objects.hashCode(this.customerName);
-        hash = 23 * hash + Objects.hashCode(this.area);
-        hash = 23 * hash + Objects.hashCode(this.productType);
-        hash = 23 * hash + Objects.hashCode(this.costMaterialSquareFoot);
-        hash = 23 * hash + Objects.hashCode(this.costLaborSquareFoot);
-        hash = 23 * hash + Objects.hashCode(this.state);
-        hash = 23 * hash + Objects.hashCode(this.taxRate);
-        hash = 23 * hash + Objects.hashCode(this.materialCost);
-        hash = 23 * hash + Objects.hashCode(this.laborCost);
-        hash = 23 * hash + Objects.hashCode(this.tax);
-        hash = 23 * hash + Objects.hashCode(this.total);
+        hash = 59 * hash + this.orderNumber;
+        hash = 59 * hash + Objects.hashCode(this.customerName);
+        hash = 59 * hash + Objects.hashCode(this.area);
+        hash = 59 * hash + Objects.hashCode(this.productType);
+        hash = 59 * hash + Objects.hashCode(this.costMaterialSquareFoot);
+        hash = 59 * hash + Objects.hashCode(this.costLaborSquareFoot);
+        hash = 59 * hash + Objects.hashCode(this.state);
+        hash = 59 * hash + Objects.hashCode(this.taxRate);
+        hash = 59 * hash + Objects.hashCode(this.materialCost);
+        hash = 59 * hash + Objects.hashCode(this.laborCost);
+        hash = 59 * hash + Objects.hashCode(this.tax);
+        hash = 59 * hash + Objects.hashCode(this.total);
+        hash = 59 * hash + Objects.hashCode(this.orderDate);
         return hash;
     }
 
@@ -197,6 +208,9 @@ public class Order {
         if (!Objects.equals(this.total, other.total)) {
             return false;
         }
+        if (!Objects.equals(this.orderDate, other.orderDate)) {
+            return false;
+        }
         return true;
     }
     
@@ -204,7 +218,7 @@ public class Order {
     public String toString() {
         return orderNumber + customerName + area + productType + costMaterialSquareFoot +
                 costLaborSquareFoot + state + taxRate + materialCost + laborCost +
-                tax + total;
+                tax + total + orderDate;
     }
     
 }

@@ -41,12 +41,7 @@ public class FloorMasterTaxDaoFileImpl implements FloorMasterTaxDao {
     }
     
     @Override
-    public void saveToFile() throws Exception {
-        writeTaxes();
-    }
-    
-    @Override
-    public void loadFromFile() throws Exception {
+    public void loadTaxFile() throws Exception {
         loadTaxes();
     }
     

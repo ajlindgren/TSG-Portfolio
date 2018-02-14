@@ -16,7 +16,6 @@ public interface FloorMasterTaxDao {
     
     List<Tax> getAllTaxes() throws Exception;
     Tax getTaxByState(String state) throws Exception;
-    void saveToFile() throws Exception;
-    void loadFromFile() throws Exception;
+    void loadTaxFile() throws Exception;
     
 }

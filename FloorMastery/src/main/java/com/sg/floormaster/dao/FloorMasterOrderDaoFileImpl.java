@@ -13,41 +13,47 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author Alex
  */
 public class FloorMasterOrderDaoFileImpl implements FloorMasterOrderDao {
-    
-    public static final String PERSISTENCE_FILE = "DataFiles/orderData.txt";
+
+    //public static String WRITE_FILE;
+    public static String READ_FILE;
     public static final String DELIMITER = ",";
-    
+
     private Map<Integer, Order> orders = new HashMap<>();
-    
+
     @Override
     public Order addOrder(Integer orderNumber, Order order) throws Exception {
         Order newOrder = orders.put(orderNumber, order);
         return newOrder;
     }
-    
+
     @Override
     public Order removeOrder(Integer orderNumber) throws Exception {
         Order nullCheck = orders.remove(orderNumber);
         return nullCheck;
     }
-    
+
     @Override
     public Order editOrder(Integer orderNumber, Order editedOrder) throws Exception {
         Order nullCheck = orders.replace(orderNumber, editedOrder);
         return nullCheck;
     }
-    
+
     @Override
     public List<Order> getAllOrders() throws Exception {
         return new ArrayList<>(orders.values());
@@ -57,34 +63,44 @@ public class FloorMasterOrderDaoFileImpl implements FloorMasterOrderDao {
     public Order getOrder(Integer orderNumber) throws Exception {
         return orders.get(orderNumber);
     }
-    
+
     @Override
-    public void saveToFile() throws Exception {
-        writeOrders();
+    public void saveOrderFile() throws Exception {
+
+        orders.values().stream()
+                .collect(Collectors.groupingBy(Order::getOrderDate))
+                .forEach((lds, ol) -> {
+                    try {
+                        writeOrders(lds.format(DateTimeFormatter.ofPattern("MMddyyyy")), ol);
+                    } catch (Exception ex) {
+                        Logger.getLogger(FloorMasterOrderDaoFileImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
     }
-    
+
     @Override
-    public void loadFromFile() throws Exception {
-        loadOrders();
+    public void loadOrderFile(LocalDate ld) throws Exception {
+        String readFile = "DataFiles/Orders_" + ld.format(DateTimeFormatter.ofPattern("MMddyyyy")) + ".txt";
+        loadOrders(readFile);
     }
-    
-    private void loadOrders() throws Exception {
+
+    private void loadOrders(String readFile) throws Exception {
         Scanner scanner;
 
         try {
             //create scanner for reading the file
-            scanner = new Scanner(new BufferedReader(new FileReader(PERSISTENCE_FILE)));
+            scanner = new Scanner(new BufferedReader(new FileReader(readFile)));
         } catch (FileNotFoundException e) {
             throw new Exception("-_- Could not load order data into memory.", e);
         }
-        
+
         String currentLine;
         String[] currentTokens;
 
         while (scanner.hasNextLine()) {
             currentLine = scanner.nextLine();
             currentTokens = currentLine.split(DELIMITER);
-            
+
             Order currentOrder = new Order();
             currentOrder.setOrderNumber(Integer.parseInt(currentTokens[0]));
             currentOrder.setCustomerName(currentTokens[1]);
@@ -104,17 +120,16 @@ public class FloorMasterOrderDaoFileImpl implements FloorMasterOrderDao {
         // close scanner
         scanner.close();
     }
-    
-    private void writeOrders() throws Exception {
+
+    private void writeOrders(String writeFile, List<Order> orderList) throws Exception {
         PrintWriter out;
 
         try {
-            out = new PrintWriter(new FileWriter(PERSISTENCE_FILE));
+            out = new PrintWriter(new FileWriter("DataFiles/Orders_" + writeFile + ".txt"));
         } catch (IOException e) {
             throw new Exception("Could not save order data.", e);
         }
 
-        List<Order> orderList = new ArrayList<>(orders.values());
         for (Order currentOrder : orderList) {
             out.println(currentOrder.getOrderNumber() + DELIMITER
                     + currentOrder.getCustomerName() + DELIMITER
@@ -132,5 +147,5 @@ public class FloorMasterOrderDaoFileImpl implements FloorMasterOrderDao {
         }
         out.close();
     }
-    
+
 }

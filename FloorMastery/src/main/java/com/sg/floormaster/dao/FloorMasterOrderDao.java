@@ -6,6 +6,7 @@
 package com.sg.floormaster.dao;
 
 import com.sg.floormaster.dto.Order;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public interface FloorMasterOrderDao {
     Order editOrder(Integer orderNumber, Order editedOrder) throws Exception;
     List<Order> getAllOrders() throws Exception;
     Order getOrder(Integer orderNumber) throws Exception;
-    void saveToFile() throws Exception;
-    void loadFromFile() throws Exception;
+    void saveOrderFile() throws Exception;
+    void loadOrderFile(LocalDate ld) throws Exception;
     
 }
