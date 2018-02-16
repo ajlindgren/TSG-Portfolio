@@ -6,6 +6,7 @@
 package com.sg.floormaster.ui;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  *
@@ -33,6 +34,8 @@ public interface UserIO {
     BigDecimal readBig(String prompt);
     
     BigDecimal readBig(String prompt, BigDecimal min, BigDecimal max);
+    
+    LocalDate readDate(String prompt);
 
     String readString(String prompt);
     

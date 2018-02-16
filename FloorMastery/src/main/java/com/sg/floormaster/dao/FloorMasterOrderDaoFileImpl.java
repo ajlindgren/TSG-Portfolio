@@ -34,22 +34,22 @@ public class FloorMasterOrderDaoFileImpl implements FloorMasterOrderDao {
     public static String READ_FILE;
     public static final String DELIMITER = ",";
 
-    private Map<Integer, Order> orders = new HashMap<>();
+    private Map<String, Order> orders = new HashMap<>();
 
     @Override
-    public Order addOrder(Integer orderNumber, Order order) throws Exception {
+    public Order addOrder(String orderNumber, Order order) throws Exception {
         Order newOrder = orders.put(orderNumber, order);
         return newOrder;
     }
 
     @Override
-    public Order removeOrder(Integer orderNumber) throws Exception {
+    public Order removeOrder(String orderNumber) throws Exception {
         Order nullCheck = orders.remove(orderNumber);
         return nullCheck;
     }
 
     @Override
-    public Order editOrder(Integer orderNumber, Order editedOrder) throws Exception {
+    public Order editOrder(String orderNumber, Order editedOrder) throws Exception {
         Order nullCheck = orders.replace(orderNumber, editedOrder);
         return nullCheck;
     }
@@ -60,7 +60,7 @@ public class FloorMasterOrderDaoFileImpl implements FloorMasterOrderDao {
     }
 
     @Override
-    public Order getOrder(Integer orderNumber) throws Exception {
+    public Order getOrder(String orderNumber) throws Exception {
         return orders.get(orderNumber);
     }
 
@@ -80,16 +80,15 @@ public class FloorMasterOrderDaoFileImpl implements FloorMasterOrderDao {
 
     @Override
     public void loadOrderFile(LocalDate ld) throws Exception {
-        String readFile = "DataFiles/Orders_" + ld.format(DateTimeFormatter.ofPattern("MMddyyyy")) + ".txt";
-        loadOrders(readFile);
+        loadOrders(ld.format(DateTimeFormatter.ofPattern("MMddyyyy")));
     }
 
-    private void loadOrders(String readFile) throws Exception {
+    private void loadOrders(String readDate) throws Exception {
         Scanner scanner;
 
         try {
             //create scanner for reading the file
-            scanner = new Scanner(new BufferedReader(new FileReader(readFile)));
+            scanner = new Scanner(new BufferedReader(new FileReader("DataFiles/Orders_" + readDate + ".txt")));
         } catch (FileNotFoundException e) {
             throw new Exception("-_- Could not load order data into memory.", e);
         }
@@ -102,7 +101,7 @@ public class FloorMasterOrderDaoFileImpl implements FloorMasterOrderDao {
             currentTokens = currentLine.split(DELIMITER);
 
             Order currentOrder = new Order();
-            currentOrder.setOrderNumber(Integer.parseInt(currentTokens[0]));
+            currentOrder.setOrderNumber(currentTokens[0]);
             currentOrder.setCustomerName(currentTokens[1]);
             currentOrder.setArea(new BigDecimal(currentTokens[2]));
             currentOrder.setProductType(currentTokens[3]);
@@ -114,6 +113,7 @@ public class FloorMasterOrderDaoFileImpl implements FloorMasterOrderDao {
             currentOrder.setLaborCost(new BigDecimal(currentTokens[9]));
             currentOrder.setTax(new BigDecimal(currentTokens[10]));
             currentOrder.setTotal(new BigDecimal(currentTokens[11]));
+            currentOrder.setOrderDate(LocalDate.parse(readDate, DateTimeFormatter.ofPattern("MMddyyyy")));
 
             orders.put(currentOrder.getOrderNumber(), currentOrder);
         }
@@ -142,7 +142,7 @@ public class FloorMasterOrderDaoFileImpl implements FloorMasterOrderDao {
                     + currentOrder.getMaterialCost() + DELIMITER
                     + currentOrder.getLaborCost() + DELIMITER
                     + currentOrder.getTax() + DELIMITER
-                    + currentOrder.getTotal() + DELIMITER);
+                    + currentOrder.getTotal());
             out.flush();
         }
         out.close();

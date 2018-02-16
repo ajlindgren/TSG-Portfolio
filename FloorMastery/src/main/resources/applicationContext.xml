@@ -30,7 +30,6 @@
         <constructor-arg ref="orderDao"/>
         <constructor-arg ref="materialDao"/>
         <constructor-arg ref="taxDao"/>
-        <constructor-arg ref="auditDao"/>
     </bean>
     
     <bean id="loggingAdvice" class="com.sg.floormaster.advice.LoggingAdvice">

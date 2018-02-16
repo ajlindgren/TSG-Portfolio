@@ -53,9 +53,9 @@ public class FloorMasterOrderDaoTest {
         
         dao.loadOrderFile(LocalDate.of(1212, 12, 12));
         
-        dao.addOrder(99, order);
+        dao.addOrder("99", order);
         
-        assertEquals(dao.getOrder(99), order);
+        assertEquals(dao.getOrder("99"), order);
     }
 
     /**
@@ -67,11 +67,11 @@ public class FloorMasterOrderDaoTest {
         
         dao.loadOrderFile(LocalDate.of(1212, 12, 12));
         
-        dao.addOrder(99, order);
+        dao.addOrder("99", order);
         
         int placeholder = dao.getAllOrders().size();
         
-        dao.removeOrder(99);
+        dao.removeOrder("99");
         
         assertTrue(dao.getAllOrders().size() < placeholder);
     }
@@ -89,10 +89,10 @@ public class FloorMasterOrderDaoTest {
         
         dao.loadOrderFile(LocalDate.of(1212, 12, 12));
         
-        dao.addOrder(99, order);
-        dao.editOrder(99, editedOrder);
+        dao.addOrder("99", order);
+        dao.editOrder("99", editedOrder);
         
-        assertNotEquals(order, dao.getOrder(99));
+        assertNotEquals(order, dao.getOrder("99"));
     }
 
     /**
@@ -114,9 +114,9 @@ public class FloorMasterOrderDaoTest {
     public void testGetOrder() throws Exception {
         Order order = new Order();
         
-        dao.addOrder(99, order);
+        dao.addOrder("99", order);
         
-        assertEquals(dao.getOrder(99), order);
+        assertEquals(dao.getOrder("99"), order);
     }
 
     /**
@@ -132,7 +132,7 @@ public class FloorMasterOrderDaoTest {
         
         Order order = new Order();
         order.setOrderDate(LocalDate.of(1212,12,12));
-        order.setOrderNumber(2);
+        order.setOrderNumber("2");
         order.setArea(BigDecimal.ZERO);
         order.setCostMaterialSquareFoot(BigDecimal.ZERO);
         order.setCostLaborSquareFoot(BigDecimal.ZERO);
@@ -142,7 +142,7 @@ public class FloorMasterOrderDaoTest {
         order.setTax(BigDecimal.ZERO);
         order.setTotal(BigDecimal.ZERO);
         
-        dao.addOrder(2, order);
+        dao.addOrder("2", order);
         
         dao.saveOrderFile();
         dao.loadOrderFile(LocalDate.of(1212,12,12));

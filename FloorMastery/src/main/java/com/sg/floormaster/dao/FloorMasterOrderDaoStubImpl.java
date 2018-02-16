@@ -20,12 +20,12 @@ import java.util.Map;
 public class FloorMasterOrderDaoStubImpl implements FloorMasterOrderDao {
 
     Order onlyOrder;
-    Map<Integer, Order> orders = new HashMap<>();
+    Map<String, Order> orders = new HashMap<>();
 
     public FloorMasterOrderDaoStubImpl() {
         onlyOrder = new Order();
         onlyOrder.setOrderDate(LocalDate.of(1111, 11, 11));
-        onlyOrder.setOrderNumber(1);
+        onlyOrder.setOrderNumber("1");
         onlyOrder.setArea(BigDecimal.ZERO);
         onlyOrder.setCostMaterialSquareFoot(BigDecimal.ZERO);
         onlyOrder.setCostLaborSquareFoot(BigDecimal.ZERO);
@@ -34,20 +34,22 @@ public class FloorMasterOrderDaoStubImpl implements FloorMasterOrderDao {
         onlyOrder.setLaborCost(BigDecimal.ZERO);
         onlyOrder.setTax(BigDecimal.ZERO);
         onlyOrder.setTotal(BigDecimal.ZERO);
+        
+        orders.put(onlyOrder.getOrderNumber(), onlyOrder);
     }
 
     @Override
-    public Order addOrder(Integer orderNumber, Order order) throws Exception {
+    public Order addOrder(String orderNumber, Order order) throws Exception {
         return orders.put(orderNumber, order);
     }
 
     @Override
-    public Order removeOrder(Integer orderNumber) throws Exception {
+    public Order removeOrder(String orderNumber) throws Exception {
         return orders.remove(orderNumber);
     }
 
     @Override
-    public Order editOrder(Integer orderNumber, Order editedOrder) throws Exception {
+    public Order editOrder(String orderNumber, Order editedOrder) throws Exception {
         return orders.replace(orderNumber, editedOrder);
     }
 
@@ -58,7 +60,7 @@ public class FloorMasterOrderDaoStubImpl implements FloorMasterOrderDao {
     }
 
     @Override
-    public Order getOrder(Integer orderNumber) throws Exception {
+    public Order getOrder(String orderNumber) throws Exception {
         return orders.get(orderNumber);
     }
 

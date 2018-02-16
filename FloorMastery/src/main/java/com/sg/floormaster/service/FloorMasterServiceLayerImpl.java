@@ -12,8 +12,11 @@ import com.sg.floormaster.dao.FloorMasterTaxDao;
 import com.sg.floormaster.dto.Material;
 import com.sg.floormaster.dto.Order;
 import com.sg.floormaster.dto.Tax;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -21,7 +24,7 @@ import java.util.stream.Collectors;
  * @author Alex
  */
 public class FloorMasterServiceLayerImpl implements FloorMasterServiceLayer {
-    
+
     FloorMasterOrderDao orderDao;
     FloorMasterMaterialDao materialDao;
     FloorMasterTaxDao taxDao;
@@ -31,22 +34,26 @@ public class FloorMasterServiceLayerImpl implements FloorMasterServiceLayer {
         this.materialDao = materialDao;
         this.taxDao = taxDao;
     }
-    
-   
+
     //ORDER DAO METHODS
     @Override
-    public Order addOrder(Integer orderNumber, Order order) throws Exception {
+    public Order addOrder(String orderNumber, Order order) throws Exception {
         return orderDao.addOrder(orderNumber, order);
     }
 
     @Override
-    public Order removeOrder(Integer orderNumber) throws Exception {
+    public Order removeOrder(String orderNumber) throws Exception {
         return orderDao.removeOrder(orderNumber);
     }
 
     @Override
-    public Order editOrder(Integer orderNumber, Order editedOrder) throws Exception {
+    public Order editOrder(String orderNumber, Order editedOrder) throws Exception {
         return orderDao.editOrder(orderNumber, editedOrder);
+    }
+
+    @Override
+    public List<Order> getAllOrders() throws Exception {
+        return orderDao.getAllOrders();
     }
 
     @Override
@@ -57,7 +64,7 @@ public class FloorMasterServiceLayerImpl implements FloorMasterServiceLayer {
     }
 
     @Override
-    public Order getOrder(Integer orderNumber) throws Exception {
+    public Order getOrder(String orderNumber) throws Exception {
         return orderDao.getOrder(orderNumber);
     }
 
@@ -71,7 +78,6 @@ public class FloorMasterServiceLayerImpl implements FloorMasterServiceLayer {
         orderDao.loadOrderFile(ld);
     }
 
-    
     //MATERIAL DAO METHODS
     @Override
     public List<Material> getAllMaterials() throws Exception {
@@ -88,7 +94,6 @@ public class FloorMasterServiceLayerImpl implements FloorMasterServiceLayer {
         materialDao.loadMaterialFile();
     }
 
-    
     //TAX DAO METHODS
     @Override
     public List<Tax> getAllTaxes() throws Exception {
@@ -104,7 +109,48 @@ public class FloorMasterServiceLayerImpl implements FloorMasterServiceLayer {
     public void loadTaxFile() throws Exception {
         taxDao.loadTaxFile();
     }
-    
-    
-    
+
+    @Override
+    public Order calcOrder(Order order, Tax tax, Material material) throws Exception {
+        order.setOrderDate(LocalDate.now());
+        order.setProductType(material.getMaterialType()); 
+        order.setCostMaterialSquareFoot(material.getCostMaterialSquareFoot());
+        order.setCostLaborSquareFoot(material.getCostLaborSquareFoot());
+        order.setState(tax.getState());
+        order.setTaxRate(tax.getRate());
+
+        BigDecimal materialCost = material.getCostMaterialSquareFoot().multiply(order.getArea());
+        order.setMaterialCost(materialCost);
+
+        BigDecimal laborCost = material.getCostLaborSquareFoot().multiply(order.getArea());
+        order.setLaborCost(laborCost);
+
+        BigDecimal taxTotal = (order.getMaterialCost().add(order.getLaborCost())).multiply(tax.getRate());
+        order.setTax(taxTotal);
+
+        BigDecimal total = order.getMaterialCost().add(order.getLaborCost()).add(order.getTax());
+        order.setTotal(total);
+
+        return order;
+    }
+
+    @Override
+    public Order calcOrderNumber(Order completeOrder) throws Exception {
+        List<Order> reference = getAllOrders(completeOrder.getOrderDate());
+        int lastOrderNumber = 0;
+
+        for (Order currentOrder : reference) {
+            int relevantLength = currentOrder.getOrderDate().format(DateTimeFormatter.ofPattern("MMddyyyy")).length();
+            if (currentOrder.getOrderNumber().length() > 1) {
+                if (Integer.parseInt(currentOrder.getOrderNumber().substring(relevantLength)) >= lastOrderNumber) {
+                    lastOrderNumber = Integer.parseInt(currentOrder.getOrderNumber().substring(relevantLength));
+                }
+            }
+        }
+
+        completeOrder.setOrderNumber(completeOrder.getOrderDate().format(DateTimeFormatter.ofPattern("MMddyyyy")) + (lastOrderNumber+1));
+
+        return completeOrder;
+    }
+
 }

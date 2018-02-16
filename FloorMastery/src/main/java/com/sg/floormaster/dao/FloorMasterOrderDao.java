@@ -15,11 +15,11 @@ import java.util.List;
  */
 public interface FloorMasterOrderDao {
     
-    Order addOrder(Integer orderNumber, Order order) throws Exception;
-    Order removeOrder(Integer orderNumber) throws Exception;
-    Order editOrder(Integer orderNumber, Order editedOrder) throws Exception;
+    Order addOrder(String orderNumber, Order order) throws Exception;
+    Order removeOrder(String orderNumber) throws Exception;
+    Order editOrder(String orderNumber, Order editedOrder) throws Exception;
     List<Order> getAllOrders() throws Exception;
-    Order getOrder(Integer orderNumber) throws Exception;
+    Order getOrder(String orderNumber) throws Exception;
     void saveOrderFile() throws Exception;
     void loadOrderFile(LocalDate ld) throws Exception;
     

@@ -15,7 +15,6 @@ import java.util.Objects;
  */
 public class Order {
     
-    private int orderNumber;
     private String customerName;
     private BigDecimal area;
     
@@ -32,16 +31,23 @@ public class Order {
     private BigDecimal tax;
     private BigDecimal total;
     private LocalDate orderDate;
+    private String orderNumber;
     
     public Order() {
-        
+        this.orderNumber = "0";
+    }
+    
+    public Order(String customerName, BigDecimal area) {
+        this.orderNumber = "0";
+        this.customerName = customerName;
+        this.area = area;
     }
 
-    public int getOrderNumber() {
+    public String getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(int orderNumber) {
+    public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
 
@@ -144,7 +150,7 @@ public class Order {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 59 * hash + this.orderNumber;
+        hash = 59 * hash + Objects.hashCode(this.orderNumber);
         hash = 59 * hash + Objects.hashCode(this.customerName);
         hash = 59 * hash + Objects.hashCode(this.area);
         hash = 59 * hash + Objects.hashCode(this.productType);
@@ -172,7 +178,7 @@ public class Order {
             return false;
         }
         final Order other = (Order) obj;
-        if (this.orderNumber != other.orderNumber) {
+        if (!Objects.equals(this.orderNumber, other.orderNumber)) {
             return false;
         }
         if (!Objects.equals(this.customerName, other.customerName)) {
