@@ -31,18 +31,18 @@ public class FloorMasterMaterialDaoStubImpl implements FloorMasterMaterialDao {
     }
 
     @Override
-    public List<Material> getAllMaterials() throws Exception {
+    public List<Material> getAllMaterials() {
         List<Material> result = new ArrayList<>(materials.values());
         return result;
     }
 
     @Override
-    public Material getMaterial(String materialType) throws Exception {
+    public Material getMaterial(String materialType) {
         return materials.get(materialType);
     }
 
     @Override
-    public void loadMaterialFile() throws Exception {
+    public void loadMaterialFile() {
         //no need to load from file in Stub Implementation
     }
     

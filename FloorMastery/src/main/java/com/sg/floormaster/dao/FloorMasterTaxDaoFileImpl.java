@@ -31,28 +31,28 @@ public class FloorMasterTaxDaoFileImpl implements FloorMasterTaxDao {
     private Map<String, Tax> taxes = new HashMap<>();
     
     @Override
-    public List<Tax> getAllTaxes() throws Exception {
+    public List<Tax> getAllTaxes() {
         return new ArrayList<>(taxes.values());
     }
 
     @Override
-    public Tax getTaxByState(String state) throws Exception {
+    public Tax getTaxByState(String state) {
         return taxes.get(state);
     }
     
     @Override
-    public void loadTaxFile() throws Exception {
+    public void loadTaxFile() throws FloorMasterPersistenceException {
         loadTaxes();
     }
     
-    private void loadTaxes() throws Exception {
+    private void loadTaxes() throws FloorMasterPersistenceException {
         Scanner scanner;
 
         try {
             //create scanner for reading the file
             scanner = new Scanner(new BufferedReader(new FileReader(PERSISTENCE_FILE)));
         } catch (FileNotFoundException e) {
-            throw new Exception("-_- Could not load material data into memory.", e);
+            throw new FloorMasterPersistenceException("-_- Could not load material data into memory.", e);
         }
         
         String currentLine;
@@ -72,22 +72,22 @@ public class FloorMasterTaxDaoFileImpl implements FloorMasterTaxDao {
         scanner.close();
     }
     
-    private void writeTaxes() throws Exception {
-        PrintWriter out;
-
-        try {
-            out = new PrintWriter(new FileWriter(PERSISTENCE_FILE));
-        } catch (IOException e) {
-            throw new Exception("Could not save material data.", e);
-        }
-        
-        List<Tax> taxList = new ArrayList<>(taxes.values());
-        for (Tax currentTax : taxList) {
-            out.println(currentTax.getState() + DELIMITER
-                    + currentTax.getRate() + DELIMITER);
-            out.flush();
-        }
-        out.close();
-    }
+//    private void writeTaxes() throws Exception {
+//        PrintWriter out;
+//
+//        try {
+//            out = new PrintWriter(new FileWriter(PERSISTENCE_FILE));
+//        } catch (IOException e) {
+//            throw new Exception("Could not save material data.", e);
+//        }
+//        
+//        List<Tax> taxList = new ArrayList<>(taxes.values());
+//        for (Tax currentTax : taxList) {
+//            out.println(currentTax.getState() + DELIMITER
+//                    + currentTax.getRate() + DELIMITER);
+//            out.flush();
+//        }
+//        out.close();
+//    }
     
 }

@@ -25,6 +25,7 @@ public class FloorMasterOrderDaoStubImpl implements FloorMasterOrderDao {
     public FloorMasterOrderDaoStubImpl() {
         onlyOrder = new Order();
         onlyOrder.setOrderDate(LocalDate.of(1111, 11, 11));
+        onlyOrder.setCustomerName("XXX");
         onlyOrder.setOrderNumber("1");
         onlyOrder.setArea(BigDecimal.ZERO);
         onlyOrder.setCostMaterialSquareFoot(BigDecimal.ZERO);
@@ -39,39 +40,49 @@ public class FloorMasterOrderDaoStubImpl implements FloorMasterOrderDao {
     }
 
     @Override
-    public Order addOrder(String orderNumber, Order order) throws Exception {
+    public Order addOrder(String orderNumber, Order order) {
         return orders.put(orderNumber, order);
     }
 
     @Override
-    public Order removeOrder(String orderNumber) throws Exception {
-        return orders.remove(orderNumber);
+    public Order cancelOrder(String orderNumber, Order cancelledOrder) {
+        return orders.replace(orderNumber, cancelledOrder);
     }
 
     @Override
-    public Order editOrder(String orderNumber, Order editedOrder) throws Exception {
+    public Order editOrder(String orderNumber, Order editedOrder) {
         return orders.replace(orderNumber, editedOrder);
     }
 
     @Override
-    public List<Order> getAllOrders() throws Exception {
+    public List<Order> getAllOrders() {
         List<Order> result = new ArrayList<>(orders.values());
         return result;
     }
 
     @Override
-    public Order getOrder(String orderNumber) throws Exception {
+    public Order getOrder(String orderNumber) {
         return orders.get(orderNumber);
     }
 
     @Override
-    public void saveOrderFile() throws Exception {
+    public void saveOrderFile() {
         //no need to write to file in Stub Implementation
     }
 
     @Override
-    public void loadOrderFile(LocalDate ld) throws Exception {
+    public void loadOrderFile(LocalDate ld) {
         //no need to read from file in Stub Implementation
     }
+
+    @Override
+    public void loadAllOrderFiles() throws FloorMasterPersistenceException {
+        //no need to read from file in Stub Implementation
+    }
+    
+    @Override
+    public void clearMemory() {
+        orders.clear();
+    }    
 
 }

@@ -5,9 +5,11 @@
  */
 package com.sg.floormaster.service;
 
+import com.sg.floormaster.dao.FloorMasterPersistenceException;
 import com.sg.floormaster.dto.Material;
 import com.sg.floormaster.dto.Order;
 import com.sg.floormaster.dto.Tax;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,27 +20,33 @@ import java.util.List;
 public interface FloorMasterServiceLayer {
     
     //OrderDao methods
-    Order addOrder(String orderNumber, Order order) throws Exception;
-    Order removeOrder(String orderNumber) throws Exception;
-    Order editOrder(String orderNumber, Order editedOrder) throws Exception;
-    List<Order> getAllOrders() throws Exception;
-    List<Order> getAllOrders(LocalDate ld) throws Exception;
-    Order getOrder(String orderNumber) throws Exception;
-    void saveOrderFile() throws Exception;
-    void loadOrderFile(LocalDate ld) throws Exception;
+    Order addOrder(String orderNumber, Order order);
+    Order cancelOrder(String orderNumber);
+    Order editOrder(String orderNumber, Order editedOrder);
+    List<Order> getAllOrders();
+    List<Order> getAllOrders(LocalDate ld);
+    List<Order> getAllOrdersFilterCancelled(LocalDate ld);
+    Order getOrder(String orderNumber) throws FloorMasterPersistenceException;
+    void saveOrderFile() throws FloorMasterPersistenceException;
+    void loadOrderFile(LocalDate ld) throws FloorMasterPersistenceException;
+    void loadAllOrderFiles() throws FloorMasterPersistenceException;
     
     //MaterialDao methods
-    List<Material> getAllMaterials() throws Exception;
-    Material getMaterial(String materialType) throws Exception;
-    void loadMaterialFile() throws Exception;
+    List<Material> getAllMaterials();
+    Material getMaterial(String materialType);
+    void loadMaterialFile() throws FloorMasterPersistenceException;
     
     //TaxDao methods
-    List<Tax> getAllTaxes() throws Exception;
-    Tax getTaxByState(String state) throws Exception;
-    void loadTaxFile() throws Exception;
+    List<Tax> getAllTaxes();
+    Tax getTaxByState(String state);
+    void loadTaxFile() throws FloorMasterPersistenceException;
     
     //ServiceLayer methods
-    Order calcOrder(Order order, Tax tax, Material material) throws Exception;
-    Order calcOrderNumber(Order order) throws Exception;
+    Order calcOrder(Order order, Tax tax, Material material);
+    Order calcOrderNumber(Order order);
+    String validateTax(String input);
+    String validateMaterial(String input);
+    String validateArea(String input);
+    String validateOrderNumber(String input);
      
 }

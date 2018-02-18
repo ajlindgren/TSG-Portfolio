@@ -8,6 +8,7 @@ package com.sg.floormaster.ui;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 /**
@@ -119,14 +120,20 @@ public class UserIOConsoleImpl implements UserIO {
         }
         return Long.parseLong(temp);
     }
-    
+
     @Override
     public BigDecimal readBig(String prompt) {
         System.out.println(prompt);
-        String temp = sc.nextLine();
-        return new BigDecimal(temp);
+        while (true) {
+            try {
+                String temp = sc.nextLine();
+                return new BigDecimal(temp);
+            } catch (NumberFormatException e) {
+                System.out.println("Incorrect Number Format. " + prompt);
+            }
+        }
     }
-    
+
     @Override
     public BigDecimal readBig(String prompt, BigDecimal min, BigDecimal max) {
         System.out.println(prompt);
@@ -143,12 +150,18 @@ public class UserIOConsoleImpl implements UserIO {
         }
         return new BigDecimal(temp);
     }
-    
+
     @Override
     public LocalDate readDate(String prompt) {
         System.out.println(prompt);
-        String temp = sc.nextLine();
-        return LocalDate.parse(temp, DateTimeFormatter.ofPattern("MMddyyyy"));
+        while (true) {
+            try {
+                String temp = sc.nextLine();
+                return LocalDate.parse(temp, DateTimeFormatter.ofPattern("MMddyyyy"));
+            } catch (DateTimeParseException e) {
+                System.out.println("Incorrect Date Format. " + prompt);
+            }
+        }
     }
 
     @Override

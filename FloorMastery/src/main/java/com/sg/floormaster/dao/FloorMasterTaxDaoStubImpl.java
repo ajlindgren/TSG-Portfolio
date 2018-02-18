@@ -30,18 +30,18 @@ public class FloorMasterTaxDaoStubImpl implements FloorMasterTaxDao {
     }
     
     @Override
-    public List<Tax> getAllTaxes() throws Exception {
+    public List<Tax> getAllTaxes() {
         List<Tax> result = new ArrayList<>(taxes.values());
         return result;
     }
 
     @Override
-    public Tax getTaxByState(String state) throws Exception {
+    public Tax getTaxByState(String state) {
         return taxes.get(state);
     }
 
     @Override
-    public void loadTaxFile() throws Exception {
+    public void loadTaxFile() {
         //no need to load from file in Stub Implementation
     }
     

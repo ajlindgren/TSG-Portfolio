@@ -31,28 +31,28 @@ public class FloorMasterMaterialDaoFileImpl implements FloorMasterMaterialDao {
     private Map<String, Material> materials = new HashMap<>();
     
     @Override
-    public List<Material> getAllMaterials() throws Exception {
+    public List<Material> getAllMaterials() {
         return new ArrayList<>(materials.values());
     }
 
     @Override
-    public Material getMaterial(String materialType) throws Exception {
+    public Material getMaterial(String materialType) {
         return materials.get(materialType);
     }
     
     @Override
-    public void loadMaterialFile() throws Exception {
+    public void loadMaterialFile() throws FloorMasterPersistenceException {
         loadMaterials();
     }
     
-    private void loadMaterials() throws Exception {
+    private void loadMaterials() throws FloorMasterPersistenceException {
         Scanner scanner;
 
         try {
             //create scanner for reading the file
             scanner = new Scanner(new BufferedReader(new FileReader(PERSISTENCE_FILE)));
         } catch (FileNotFoundException e) {
-            throw new Exception("-_- Could not load material data into memory.", e);
+            throw new FloorMasterPersistenceException("-_- Could not load material data into memory.", e);
         }
         
         String currentLine;
@@ -73,23 +73,23 @@ public class FloorMasterMaterialDaoFileImpl implements FloorMasterMaterialDao {
         scanner.close();
     }
     
-    private void writeMaterials() throws Exception {
-        PrintWriter out;
-
-        try {
-            out = new PrintWriter(new FileWriter(PERSISTENCE_FILE));
-        } catch (IOException e) {
-            throw new Exception("Could not save material data.", e);
-        }
-        
-        List<Material> materialList = new ArrayList<>(materials.values());
-        for (Material currentMaterial : materialList) {
-            out.println(currentMaterial.getMaterialType() + DELIMITER
-                    + currentMaterial.getCostMaterialSquareFoot() + DELIMITER
-                    + currentMaterial.getCostLaborSquareFoot() + DELIMITER);
-            out.flush();
-        }
-        out.close();
-    }
+//    private void writeMaterials() throws Exception {
+//        PrintWriter out;
+//
+//        try {
+//            out = new PrintWriter(new FileWriter(PERSISTENCE_FILE));
+//        } catch (IOException e) {
+//            throw new Exception("Could not save material data.", e);
+//        }
+//        
+//        List<Material> materialList = new ArrayList<>(materials.values());
+//        for (Material currentMaterial : materialList) {
+//            out.println(currentMaterial.getMaterialType() + DELIMITER
+//                    + currentMaterial.getCostMaterialSquareFoot() + DELIMITER
+//                    + currentMaterial.getCostLaborSquareFoot() + DELIMITER);
+//            out.flush();
+//        }
+//        out.close();
+//    }
     
 }

@@ -11,6 +11,7 @@ import com.sg.floormaster.dto.Tax;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -69,12 +70,10 @@ public class FloorMasterServiceLayerTest {
      * Test of removeOrder method, of class FloorMasterServiceLayer.
      */
     @Test
-    public void testRemoveOrder() throws Exception {
-        int placeholder = service.getAllOrders().size();
+    public void testCancelOrder() throws Exception {
+        service.cancelOrder("1");
         
-        service.removeOrder("1");
-        
-        assertNotEquals(placeholder, service.getAllOrders().size());
+        assertEquals("(Cancelled)XXX", service.getOrder("1").getCustomerName());
     }
 
     /**

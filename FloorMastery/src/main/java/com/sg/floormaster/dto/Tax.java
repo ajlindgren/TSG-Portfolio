@@ -32,6 +32,10 @@ public class Tax {
     public BigDecimal getRate() {
         return rate;
     }
+    
+    public BigDecimal getCalcRate() {
+        return (rate.divide(new BigDecimal("100.00"))).add(BigDecimal.ONE);
+    }
 
     public void setRate(BigDecimal rate) {
         this.rate = rate;

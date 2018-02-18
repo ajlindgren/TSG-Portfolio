@@ -15,12 +15,14 @@ import java.util.List;
  */
 public interface FloorMasterOrderDao {
     
-    Order addOrder(String orderNumber, Order order) throws Exception;
-    Order removeOrder(String orderNumber) throws Exception;
-    Order editOrder(String orderNumber, Order editedOrder) throws Exception;
-    List<Order> getAllOrders() throws Exception;
-    Order getOrder(String orderNumber) throws Exception;
-    void saveOrderFile() throws Exception;
-    void loadOrderFile(LocalDate ld) throws Exception;
+    Order addOrder(String orderNumber, Order order);
+    Order cancelOrder(String orderNumber, Order cancelledOrder);
+    Order editOrder(String orderNumber, Order editedOrder);
+    List<Order> getAllOrders();
+    Order getOrder(String orderNumber);
+    void clearMemory();
+    void saveOrderFile() throws FloorMasterPersistenceException;
+    void loadOrderFile(LocalDate ld) throws FloorMasterPersistenceException;
+    void loadAllOrderFiles() throws FloorMasterPersistenceException;
     
 }

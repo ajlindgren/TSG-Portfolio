@@ -14,8 +14,8 @@ import java.util.List;
  */
 public interface FloorMasterMaterialDao {
     
-    List<Material> getAllMaterials() throws Exception;
-    Material getMaterial(String materialType) throws Exception;
-    void loadMaterialFile() throws Exception;
+    List<Material> getAllMaterials();
+    Material getMaterial(String materialType);
+    void loadMaterialFile() throws FloorMasterPersistenceException;
     
 }

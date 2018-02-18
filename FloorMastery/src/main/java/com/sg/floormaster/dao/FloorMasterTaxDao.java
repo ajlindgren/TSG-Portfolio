@@ -14,8 +14,8 @@ import java.util.List;
  */
 public interface FloorMasterTaxDao {
     
-    List<Tax> getAllTaxes() throws Exception;
-    Tax getTaxByState(String state) throws Exception;
-    void loadTaxFile() throws Exception;
+    List<Tax> getAllTaxes();
+    Tax getTaxByState(String state);
+    void loadTaxFile() throws FloorMasterPersistenceException;
     
 }
