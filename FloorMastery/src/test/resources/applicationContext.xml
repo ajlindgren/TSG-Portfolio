@@ -20,10 +20,12 @@
     <bean id="orderDaoStub" class="com.sg.floormaster.dao.FloorMasterOrderDaoStubImpl"/>
     <bean id="materialDaoStub" class="com.sg.floormaster.dao.FloorMasterMaterialDaoStubImpl"/>
     <bean id="taxDaoStub" class="com.sg.floormaster.dao.FloorMasterTaxDaoStubImpl"/>
+    <bean id="trainingDaoStub" class="com.sg.floormaster.dao.FloorMasterTrainingDaoStubImpl"/>
     <bean id="service" class="com.sg.floormaster.service.FloorMasterServiceLayerImpl">
         <constructor-arg ref="orderDaoStub"/>
         <constructor-arg ref="materialDaoStub"/>
         <constructor-arg ref="taxDaoStub"/>
+        <constructor-arg ref="trainingDaoStub"/>
     </bean>
     
 </beans>

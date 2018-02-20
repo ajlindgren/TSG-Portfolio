@@ -24,12 +24,14 @@
     <bean id="orderDao" class="com.sg.floormaster.dao.FloorMasterOrderDaoFileImpl"/>
     <bean id="materialDao" class="com.sg.floormaster.dao.FloorMasterMaterialDaoFileImpl"/>
     <bean id="taxDao" class="com.sg.floormaster.dao.FloorMasterTaxDaoFileImpl"/>
+    <bean id="trainingDao" class="com.sg.floormaster.dao.FloorMasterTrainingDaoFileImpl"/>
     <bean id="auditDao" class="com.sg.floormaster.dao.FloorMasterAuditDaoFileImpl"/>
     
     <bean id="service" class="com.sg.floormaster.service.FloorMasterServiceLayerImpl">
         <constructor-arg ref="orderDao"/>
         <constructor-arg ref="materialDao"/>
         <constructor-arg ref="taxDao"/>
+        <constructor-arg ref="trainingDao"/>
     </bean>
     
     <bean id="loggingAdvice" class="com.sg.floormaster.advice.LoggingAdvice">

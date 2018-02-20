@@ -83,18 +83,23 @@ public class UserIOConsoleImpl implements UserIO {
     @Override
     public int readInt(String prompt, int min, int max) {
         System.out.println(prompt);
-        String temp = sc.nextLine();
-        boolean inRange = false;
-        while (!inRange) {
-            if (min <= Integer.parseInt(temp) && Integer.parseInt(temp) <= max) {
-                inRange = true;
-                return Integer.parseInt(temp);
-            } else {
-                System.out.println(prompt);
-                temp = sc.next();
+        while (true) {
+            try {
+                String temp = sc.nextLine();
+                boolean inRange = false;
+                while (!inRange) {
+                    if (min <= Integer.parseInt(temp) && Integer.parseInt(temp) <= max) {
+                        inRange = true;
+                        return Integer.parseInt(temp);
+                    } else {
+                        System.out.println(prompt);
+                        temp = sc.next();
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid Entry. " + prompt);
             }
         }
-        return Integer.parseInt(temp);
     }
 
     @Override

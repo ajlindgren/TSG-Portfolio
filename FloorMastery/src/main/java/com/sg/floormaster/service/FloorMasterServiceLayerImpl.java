@@ -9,6 +9,7 @@ import com.sg.floormaster.dao.FloorMasterMaterialDao;
 import com.sg.floormaster.dao.FloorMasterOrderDao;
 import com.sg.floormaster.dao.FloorMasterPersistenceException;
 import com.sg.floormaster.dao.FloorMasterTaxDao;
+import com.sg.floormaster.dao.FloorMasterTrainingDao;
 import com.sg.floormaster.dto.Material;
 import com.sg.floormaster.dto.Order;
 import com.sg.floormaster.dto.Tax;
@@ -28,11 +29,13 @@ public class FloorMasterServiceLayerImpl implements FloorMasterServiceLayer {
     FloorMasterOrderDao orderDao;
     FloorMasterMaterialDao materialDao;
     FloorMasterTaxDao taxDao;
+    FloorMasterTrainingDao trainingDao;
 
-    public FloorMasterServiceLayerImpl(FloorMasterOrderDao orderDao, FloorMasterMaterialDao materialDao, FloorMasterTaxDao taxDao) {
+    public FloorMasterServiceLayerImpl(FloorMasterOrderDao orderDao, FloorMasterMaterialDao materialDao, FloorMasterTaxDao taxDao, FloorMasterTrainingDao trainingDao) {
         this.orderDao = orderDao;
         this.materialDao = materialDao;
         this.taxDao = taxDao;
+        this.trainingDao = trainingDao;
     }
 
     //ORDER DAO METHODS
@@ -72,7 +75,7 @@ public class FloorMasterServiceLayerImpl implements FloorMasterServiceLayer {
         
         return orderDao.getAllOrders().stream()
                 .filter(o -> o.getOrderDate().equals(ld))
-                .filter(o -> o.getCustomerName().indexOf(cancelledFlag) == -1)
+                .filter(o -> !o.getCustomerName().contains(cancelledFlag))
                 .collect(Collectors.toList());
     }
 
@@ -131,7 +134,14 @@ public class FloorMasterServiceLayerImpl implements FloorMasterServiceLayer {
     public void loadTaxFile() throws FloorMasterPersistenceException {
         taxDao.loadTaxFile();
     }
+    
+    //TRAINING DAO METHODS
+    @Override
+    public boolean readTrainingConfig() throws FloorMasterPersistenceException {
+        return trainingDao.readTrainingConfig();
+    }
 
+    //SERVICE LAYER METHODS
     @Override
     public Order calcOrder(Order order, Tax tax, Material material) {
         order.setOrderDate(LocalDate.now());

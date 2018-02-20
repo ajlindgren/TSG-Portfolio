@@ -41,6 +41,7 @@ public class FloorMasterController {
     public void run() {
         boolean keepGoing = true;
         int menuSelection = 0;
+        displayEntryBanner();
         while (keepGoing) {
             try {
 
@@ -74,6 +75,10 @@ public class FloorMasterController {
         }
         exitMessage();
     }
+    
+    private void displayEntryBanner() {
+        view.printEntryBanner();
+    }
 
     private int getMenuSelection() {
         return view.printMenuAndGetSelection();
@@ -82,7 +87,6 @@ public class FloorMasterController {
     private void listOrders() throws FloorMasterPersistenceException {
         view.displayDisplayAllBanner();
         LocalDate dateChoice = view.getOrderDateChoice();
-//        service.loadOrderFile(dateChoice);
         List<Order> orderList = service.getAllOrdersFilterCancelled(dateChoice);
         if (orderList.size() > 0)
             view.displayOrderList(orderList);
@@ -95,10 +99,16 @@ public class FloorMasterController {
         
         Tax tax = null;
         Material material = null;
-        while (tax == null)
+        while (tax == null) {
             tax = service.getTaxByState(service.validateTax(view.getStateChoice()));
-        while (material == null)
+            if (tax == null)
+                view.displayInvalidEntry();
+        }
+        while (material == null) {
             material = service.getMaterial(service.validateMaterial(view.getMaterialChoice()));
+            if (material == null)
+                view.displayInvalidEntry();
+        }
         Order order = new Order(view.getCustomerNameChoice(), view.getAreaChoice());
 
         Order completedOrder = service.calcOrderNumber(service.calcOrder(order, tax, material));
@@ -170,8 +180,12 @@ public class FloorMasterController {
     }
 
     private void saveOrderFiles() throws FloorMasterPersistenceException {
-        service.saveOrderFile();
-        view.displaySaveSuccessBanner();
+        if (!service.readTrainingConfig()){
+            service.saveOrderFile();
+            view.displaySaveSuccessBanner();
+        } else {
+            view.displayTrainingConfig();
+        }
     }
 
     private void unknownCommand() {

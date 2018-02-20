@@ -24,9 +24,14 @@ public class FloorMasterView {
     public FloorMasterView(UserIO io) {
         this.io = io;
     }
+    
+    public void printEntryBanner() {
+        io.print("");
+        io.print("<<Flooring Program>>");
+    }
 
     public int printMenuAndGetSelection() {
-        io.print("<<Flooring Program>>");
+        io.print("");
         io.print("1. Display Orders (by Date)");
         io.print("2. Add an Order to the system");
         io.print("3. Edit an Order in the system");
@@ -38,6 +43,7 @@ public class FloorMasterView {
     }
 
     public void displayOrderList(List<Order> orderList) {
+        io.print("");
         for (Order currentOrder : orderList) {
             io.print(currentOrder.getOrderNumber() + " - Name: "
                     + currentOrder.getCustomerName() + ", State: "
@@ -55,6 +61,7 @@ public class FloorMasterView {
     }
 
     public void displayDisplayAllBanner() {
+        io.print("");
         io.print("~~~ Display All Orders ~~~");
     }
 
@@ -63,6 +70,7 @@ public class FloorMasterView {
     }
 
     public void displayAddOrderBanner() {
+        io.print("");
         io.print("~~~ Add an Order ~~~");
     }
     
@@ -114,6 +122,7 @@ public class FloorMasterView {
 //    }
 
     public String displayOrder(Order currentOrder) {
+        io.print("");
         if (currentOrder != null) {
             io.print(currentOrder.getOrderNumber() + " - Name: "
                     + currentOrder.getCustomerName() + ", State: "
@@ -168,6 +177,11 @@ public class FloorMasterView {
         return infoArray;
     }
     
+    public void displayInvalidEntry() {
+        io.print("");
+        io.print("Invalid Entry.");
+    }
+    
     public void displayInvalidEditStateEntry() {
         io.print("Invalid input. This Order's State field will remain unchanged.");
     }
@@ -211,5 +225,9 @@ public class FloorMasterView {
     public void displayErrorMessage(String errorMsg) {
         io.print("-~= ERROR =~-");
         io.print(errorMsg);
+    }
+    
+    public void displayTrainingConfig() {
+        io.print("Program is in Training Mode. No changes will be saved to file.");
     }
 }

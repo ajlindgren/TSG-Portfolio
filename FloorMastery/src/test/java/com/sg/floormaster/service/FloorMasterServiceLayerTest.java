@@ -11,7 +11,6 @@ import com.sg.floormaster.dto.Tax;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -182,12 +181,22 @@ public class FloorMasterServiceLayerTest {
         //no need to read from file in Stub Implementation
     }
     
+    // ==================== Training Dao Methods ============================
+    
+    /**
+     * Test of readConfigFile method, of class FloorMasterServiceLayer.
+     */
+    @Test
+    public void testReadConfigFile() throws Exception {
+        boolean test = service.readTrainingConfig();
+    }
+    
     // ==================== ServiceLayer Methods ============================
     /**
      * Test of calcOrder method, of class FloorMasterServiceLayer.
      */
     @Test
-    public void testCalcOrder() throws Exception {
+    public void testCalcOrder() {
         Tax tax = new Tax();
         tax.setState("XX");
         tax.setRate(BigDecimal.ONE);
@@ -218,7 +227,7 @@ public class FloorMasterServiceLayerTest {
      * Test of calcOrderNumber method, of class FloorMasterServiceLayer.
      */
     @Test
-    public void testCalcOrderNumber() throws Exception {
+    public void testCalcOrderNumber() {
         Order order = new Order();
         order.setOrderDate(LocalDate.parse("02152018", DateTimeFormatter.ofPattern("MMddyyyy")));
         
@@ -227,4 +236,43 @@ public class FloorMasterServiceLayerTest {
         assertTrue(numberedOrder.getOrderNumber().length() > numberedOrder.getOrderDate().format(DateTimeFormatter.ofPattern("MMddyyyy")).length());
     }
     
+    /**
+     * Test of validateTax method, of class FloorMasterServiceLayer.
+     */
+    @Test
+    public void testValidateTax() {
+        assertNotNull(service.validateTax("OH"));
+        assertNull(service.validateTax("AL"));
+        assertNull(service.validateTax("MN"));
+    }
+    
+    /**
+     * Test of validateMaterial method, of class FloorMasterServiceLayer.
+     */
+    @Test
+    public void testValidateMaterial() {
+        assertNotNull(service.validateMaterial("Wood"));
+        assertNull(service.validateMaterial("XXXX"));
+        assertNull(service.validateMaterial("Linoleum"));
+    }
+    
+    /**
+     * Test of validateArea method, of class FloorMasterServiceLayer.
+     */
+    @Test
+    public void testValidateArea() {
+        assertNotNull(service.validateArea("100"));
+        assertNull(service.validateArea("9.9.9.9.9"));
+        assertNull(service.validateArea(""));
+    }
+    
+    /**
+     * Test of validateOrderNumber method, of class FloorMasterServiceLayer.
+     */
+    @Test
+    public void testValidateOrderNumber() {
+        assertNotNull(service.validateOrderNumber("1"));
+        assertNull(service.validateOrderNumber("0"));
+        assertNull(service.validateOrderNumber("111111111"));
+    }
 }

@@ -41,6 +41,9 @@ public interface FloorMasterServiceLayer {
     Tax getTaxByState(String state);
     void loadTaxFile() throws FloorMasterPersistenceException;
     
+    //TrainingDao methods
+    boolean readTrainingConfig() throws FloorMasterPersistenceException;
+    
     //ServiceLayer methods
     Order calcOrder(Order order, Tax tax, Material material);
     Order calcOrderNumber(Order order);
