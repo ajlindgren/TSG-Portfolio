@@ -118,7 +118,7 @@ public class FloorMasterOrderDaoTest {
         
         List<Order> orderList = dao.getAllOrders();
         
-        assertTrue(orderList.size() > 0);
+        assertTrue(orderList.size() == 1);
         
         dao.clearMemory();
     }
@@ -217,7 +217,7 @@ public class FloorMasterOrderDaoTest {
     public void testLoadOrderFile() throws FloorMasterPersistenceException {
         dao.loadOrderFile(LocalDate.of(1212, 12, 12));
         
-        assertTrue(dao.getAllOrders().size() > 0);
+        assertTrue(dao.getAllOrders().size() == 1);
     }
     
     /**

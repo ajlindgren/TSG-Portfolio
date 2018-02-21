@@ -197,6 +197,7 @@ public class FloorMasterServiceLayerTest {
      */
     @Test
     public void testCalcOrder() {
+        //first order, area = 1.00, cost material = 1.00, cost labor = 1.00, tax = 1%
         Tax tax = new Tax();
         tax.setState("XX");
         tax.setRate(BigDecimal.ONE);
@@ -211,16 +212,27 @@ public class FloorMasterServiceLayerTest {
         order.setArea(BigDecimal.ONE);
         
         Order calculatedOrder = service.calcOrder(order, tax, material);
+
+        assertEquals(calculatedOrder.getTotal(), new BigDecimal("2.02"));
         
-        assertNotNull(calculatedOrder.getProductType());
-        assertNotNull(calculatedOrder.getCostMaterialSquareFoot());
-        assertNotNull(calculatedOrder.getCostLaborSquareFoot());
-        assertNotNull(calculatedOrder.getState());
-        assertNotNull(calculatedOrder.getTaxRate());
-        assertNotNull(calculatedOrder.getMaterialCost());
-        assertNotNull(calculatedOrder.getLaborCost());
-        assertNotNull(calculatedOrder.getTax());
-        assertNotNull(calculatedOrder.getTotal());
+        //second order, area = 100.00, cost material = 4.50, cost labor = 5.75, tax = 9%
+        Tax tax2 = new Tax();
+        tax2.setState("AA");
+        tax2.setRate(new BigDecimal("9.00"));
+        
+        Material material2 = new Material();
+        material2.setMaterialType("AAAA");
+        material2.setCostMaterialSquareFoot(new BigDecimal("4.50"));
+        material2.setCostLaborSquareFoot(new BigDecimal("5.75"));
+        
+        Order order2 = new Order();
+        order2.setCustomerName("XXXX");
+        order2.setArea(new BigDecimal("100.00"));
+        
+        Order calculatedOrder2 = service.calcOrder(order2, tax2, material2);
+        
+        assertEquals(calculatedOrder2.getTotal(), new BigDecimal("1117.25"));
+        
     }
     
     /**
