@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Vending Machine</title>
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Faustina" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <div id="headerDiv">
+                <h1 class="text-center" style="padding-top: 10px">Vend-o-Tronic 2000 Deluxe</h1>
+            </div>
+            
+            <div class="container row" id="mainDiv">
+                <!-- left-side Div containing product info display -->
+                <div class="col-md-9" id="left">
+                    <div class="row-md-4" id="productDiv"></div>
+                </div>
+                
+                <!-- right-side Div containing user input/feedback -->
+                <div class="col-md-3" align="center" id="right">
+                    <div class="row" id="rTop">
+                        <h3>Deposit</h3>
+                        <form class="form-horizontal" role="form" id="totalIn">
+                            <div class="form-group form-group-sm">
+                                <input class="form-control" id="disabledTotalInput" type="text" placeholder="Total $ Deposited" readonly />
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <button type="button" id="add-dollar" class="btn btn-default deposit">$1</button>
+                                <button type="button" id="add-quarter" class="btn btn-default deposit">$.25</button>                
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <button type="button" id="add-dime" class="btn btn-default deposit">$.10</button>
+                                <button type="button" id="add-nickel" class="btn btn-default deposit">$.05</button> 
+                            </div>
+                        </form>
+                    </div>
+                    <hr>
+                    <div class="row" id="rMid">
+                        <h3>Messages</h3>
+                        <form class="form-horizontal" role="form" id="purchase">
+                            <div class="form-group form-group-sm">
+                                <input class="form-control" id="disable-messages" type="text" placeholder="Messages will display here" readonly />
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-md-1"></div>
+                                <label for="display-item" class="col-md-2 control-label">
+                                    Item:
+                                </label>
+                                <div class="col-md-8">
+                                    <input class="form-control" id="display-item" type="text" placeholder="" readonly />
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <button type="button" id="make-purchase" class="btn btn-default">Make Purchase</button>
+                            </div>
+                        </form>
+                    </div>
+                    <hr>
+                    <div class="row" id="rBot">
+                        <h3>Change</h3>
+                        <form class="form-horizontal" role="form" id="change">
+                            <div class="form-group form-group-sm">
+                                <input class="form-control" id="display-change" type="text" placeholder="Change will be returned here" readonly />
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <button type="button" id="return-change" class="btn btn-default">Return Change</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                    
+            <!-- mainDiv endpoint -->
+            </div>
+        <!-- containerDiv endpoint -->
+        </div>
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/home.js"></script>
+        <script src="js/jquery.flip.min.js"></script>
+    </body>
+</html>
