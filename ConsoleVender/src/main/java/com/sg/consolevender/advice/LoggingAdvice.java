@@ -5,8 +5,8 @@
  */
 package com.sg.consolevender.advice;
 
-import com.sg.consolevender.dao.ConsoleVenderAuditDao;
-import com.sg.consolevender.dao.ConsoleVenderPersistenceException;
+import com.sg.vendingmachinespringmvc.dao.ConsoleVenderAuditDao;
+import com.sg.vendingmachinespringmvc.dao.ConsoleVenderPersistenceException;
 import org.aspectj.lang.JoinPoint;
 
 /**

@@ -5,8 +5,8 @@
  */
 package com.sg.consolevender.ui;
 
-import com.sg.consolevender.dto.Change;
-import com.sg.consolevender.dto.Product;
+import com.sg.vendingmachinespringmvc.model.Change;
+import com.sg.vendingmachinespringmvc.model.Product;
 import java.math.BigDecimal;
 import java.util.List;
 

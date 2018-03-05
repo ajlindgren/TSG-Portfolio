@@ -5,12 +5,12 @@
  */
 package com.sg.consolevender.controller;
 
-import com.sg.consolevender.dao.ConsoleVenderPersistenceException;
-import com.sg.consolevender.dto.Change;
-import com.sg.consolevender.dto.Product;
-import com.sg.consolevender.service.ConsoleVenderInsufficientFundsException;
-import com.sg.consolevender.service.ConsoleVenderServiceLayer;
-import com.sg.consolevender.service.ConsoleVenderZeroInventoryException;
+import com.sg.vendingmachinespringmvc.dao.ConsoleVenderPersistenceException;
+import com.sg.vendingmachinespringmvc.model.Change;
+import com.sg.vendingmachinespringmvc.model.Product;
+import com.sg.vendingmachinespringmvc.service.ConsoleVenderInsufficientFundsException;
+import com.sg.vendingmachinespringmvc.service.ConsoleVenderServiceLayer;
+import com.sg.vendingmachinespringmvc.service.ConsoleVenderZeroInventoryException;
 import com.sg.consolevender.ui.ConsoleVenderView;
 import java.math.BigDecimal;
 

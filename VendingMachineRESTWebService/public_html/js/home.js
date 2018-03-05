@@ -103,9 +103,9 @@ $(document).ready(function () {
         if (currentProduct !== null) {
             $.ajax({
                 type: 'GET',
-                url: 'http://localhost:8080/money/'
+                url: 'http://localhost:8080/VendingMachineSpringMVC/money/'
                         + totalDeposit.toFixed(2) + '/item/'
-                        + currentProduct.find('.id').text(),
+                        + currentProduct.find('.name').text(),
                 success: function (change) {
                     $('#display-change').val(change.quarters + ' Q(s), '
                             + change.dimes + ' D(s), and '
@@ -138,7 +138,7 @@ function loadProducts() {
 
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:8080/items',
+        url: 'http://localhost:8080/VendingMachineSpringMVC/items',
         success: function (productArray) {
 
             $.each(productArray, function (index, product) {
