@@ -39,7 +39,6 @@ public class WebVenderRESTController {
     }
 
     @RequestMapping(value="/items", method=RequestMethod.GET)
-    @ResponseBody
     public List<Product> getAllProducts() throws WebVenderPersistenceException {
             return service.getAllProducts();
     }

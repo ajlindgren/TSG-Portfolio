@@ -83,6 +83,7 @@
                     <div class="row" id="rBot">
                         <h3>Change</h3>
                         <div>
+                            <!-- rounding errors will likely be resolved by converting to int -->
                             <input class="form-control" id="display-change" type="text" placeholder="Change will be returned here" 
                                    value="${quarters} Q(s), ${dimes} D(s) and ${nickels} N(s)" readonly/>
                         </div>

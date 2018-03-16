@@ -78,6 +78,7 @@ public class WebVenderController {
         return "redirect:/";
     }
 
+    //should be POST mapping - 
     @GetMapping("/purchaseSelection")
     public String purchaseSelection(Product product, Model model) {
         try {

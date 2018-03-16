@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop"
+              xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/mvc
@@ -15,12 +15,13 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"> 
 
     <!-- Bean definitions go here -->
-    <tx:annotation-driven />
+    <tx:annotation-driven/>
     
+    <context:component-scan base-package="com.sg.notestracker.dao" />
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/contact_list"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/notes"/>
         <property name="username" value="root"/>
         <property name="password" value="root"/>
         <property name="initialSize" value="5"/>
@@ -37,8 +38,8 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
     
-    <bean id="contactListDao" class="com.sg.contactlistspringmvc.dao.ContactListDaoDbImpl">
+    <bean id="libraryDao"
+          class="com.sg.notestracker.dao.NotesDaoJdbcTemplateImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
-   
 </beans>
