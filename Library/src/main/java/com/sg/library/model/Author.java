@@ -88,15 +88,15 @@ public class Author {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + this.authorId;
-        hash = 79 * hash + Objects.hashCode(this.firstName);
-        hash = 79 * hash + Objects.hashCode(this.lastName);
-        hash = 79 * hash + Objects.hashCode(this.street);
-        hash = 79 * hash + Objects.hashCode(this.city);
-        hash = 79 * hash + Objects.hashCode(this.state);
-        hash = 79 * hash + Objects.hashCode(this.zip);
-        hash = 79 * hash + Objects.hashCode(this.phone);
+        int hash = 7;
+        hash = 89 * hash + this.authorId;
+        hash = 89 * hash + Objects.hashCode(this.firstName);
+        hash = 89 * hash + Objects.hashCode(this.lastName);
+        hash = 89 * hash + Objects.hashCode(this.street);
+        hash = 89 * hash + Objects.hashCode(this.city);
+        hash = 89 * hash + Objects.hashCode(this.state);
+        hash = 89 * hash + Objects.hashCode(this.zip);
+        hash = 89 * hash + Objects.hashCode(this.phone);
         return hash;
     }
 
@@ -138,6 +138,8 @@ public class Author {
         }
         return true;
     }
+
+    
     
     
 }

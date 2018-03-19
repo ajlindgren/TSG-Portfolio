@@ -83,13 +83,13 @@ public class Book {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 53 * hash + this.bookId;
-        hash = 53 * hash + Objects.hashCode(this.isbn);
-        hash = 53 * hash + Objects.hashCode(this.title);
-        hash = 53 * hash + Objects.hashCode(this.publisher);
-        hash = 53 * hash + Objects.hashCode(this.authors);
-        hash = 53 * hash + Objects.hashCode(this.price);
-        hash = 53 * hash + Objects.hashCode(this.publishDate);
+        hash = 71 * hash + this.bookId;
+        hash = 71 * hash + Objects.hashCode(this.isbn);
+        hash = 71 * hash + Objects.hashCode(this.title);
+        hash = 71 * hash + Objects.hashCode(this.publisher);
+        hash = 71 * hash + Objects.hashCode(this.authors);
+        hash = 71 * hash + Objects.hashCode(this.price);
+        hash = 71 * hash + Objects.hashCode(this.publishDate);
         return hash;
     }
 
@@ -128,6 +128,6 @@ public class Book {
         }
         return true;
     }
-    
+
     
 }

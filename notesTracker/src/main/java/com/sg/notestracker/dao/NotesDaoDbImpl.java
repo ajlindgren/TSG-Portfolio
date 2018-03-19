@@ -42,16 +42,20 @@ public class NotesDaoDbImpl implements NotesDao {
     
     private static final String SQL_SELECT_PAGES_BY_NOTEBOOK_ID = "select * from pages where notebookId = ?";
     
+    private JdbcTemplate jdbcTemplate;
+    
     @Inject
-    private JdbcTemplate dbTemp;
+    public NotesDaoDbImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+   }
     
     @Override
     @Transactional
     public void addNotebook(Notebook nb) {
-        dbTemp.update(SQL_INSERT_NOTEBOOK,
+        jdbcTemplate.update(SQL_INSERT_NOTEBOOK,
                 nb.getSubject(),
                 nb.getColor());
-        int notebookId = dbTemp.queryForObject("select LAST_INSERT_ID()", Integer.class);
+        int notebookId = jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class);
         
         nb.setNotebookId(notebookId);
     }
@@ -59,7 +63,7 @@ public class NotesDaoDbImpl implements NotesDao {
     @Override
     public Notebook getNotebookById(int notebookId) {
         try {
-            return dbTemp.queryForObject(SQL_SELECT_NOTEBOOK, new NotebookMapper(), notebookId);
+            return jdbcTemplate.queryForObject(SQL_SELECT_NOTEBOOK, new NotebookMapper(), notebookId);
         } catch (EmptyResultDataAccessException ex) {
             return null;
         }
@@ -67,19 +71,19 @@ public class NotesDaoDbImpl implements NotesDao {
 
     @Override
     public List<Notebook> getAllNotebooks() {
-        List<Notebook> notebookList = dbTemp.query(SQL_SELECT_ALL_NOTEBOOKS, new NotebookMapper());
+        List<Notebook> notebookList = jdbcTemplate.query(SQL_SELECT_ALL_NOTEBOOKS, new NotebookMapper());
         return associatePagesWithNotebooks(notebookList);
     }
 
 //    @Override
 //    public List<Page> getPagesByNotebookId(int notebookId) {
-//        List<Page> pageList = dbTemp.query(SQL_SELECT_PAGES_BY_NOTEBOOK_ID, new PageMapper(), notebookId);
+//        List<Page> pageList = jdbcTemplate.query(SQL_SELECT_PAGES_BY_NOTEBOOK_ID, new PageMapper(), notebookId);
 //        return associatePagesWithNotebooks(pageList);
 //    }
 
     @Override
     public void updateNotebook(Notebook nb) {
-        dbTemp.update(SQL_UPDATE_NOTEBOOK,
+        jdbcTemplate.update(SQL_UPDATE_NOTEBOOK,
                 nb.getSubject(),
                 nb.getColor(),
                 nb.getNotebookId());
@@ -87,13 +91,13 @@ public class NotesDaoDbImpl implements NotesDao {
 
     @Override
     public void deleteNotebook(int notebookId) {
-        dbTemp.update(SQL_DELETE_NOTEBOOK, notebookId);
+        jdbcTemplate.update(SQL_DELETE_NOTEBOOK, notebookId);
     }
 
     @Override
     @Transactional
     public void addPage(Page page) {
-        dbTemp.update(SQL_INSERT_PAGE,
+        jdbcTemplate.update(SQL_INSERT_PAGE,
                 page.getDate(),
                 page.getContent(),
                 page.getNotebookId());
@@ -102,7 +106,7 @@ public class NotesDaoDbImpl implements NotesDao {
     @Override
     public Page getPageById(int pageId) {
         try {
-            return dbTemp.queryForObject(SQL_SELECT_PAGE, new PageMapper(), pageId);
+            return jdbcTemplate.queryForObject(SQL_SELECT_PAGE, new PageMapper(), pageId);
         } catch (EmptyResultDataAccessException ex) {
             return null;
         }
@@ -110,12 +114,12 @@ public class NotesDaoDbImpl implements NotesDao {
 
     @Override
     public List<Page> getAllPages() {
-        return dbTemp.query(SQL_SELECT_ALL_PAGES, new PageMapper());
+        return jdbcTemplate.query(SQL_SELECT_ALL_PAGES, new PageMapper());
     }
 
     @Override
     public void updatePage(Page page) {
-        dbTemp.update(SQL_UPDATE_PAGE,
+        jdbcTemplate.update(SQL_UPDATE_PAGE,
                 page.getDate(),
                 page.getContent(),
                 page.getNotebookId(),
@@ -124,11 +128,11 @@ public class NotesDaoDbImpl implements NotesDao {
 
     @Override
     public void deletePage(int pageId) {
-        dbTemp.update(SQL_DELETE_PAGE, pageId);
+        jdbcTemplate.update(SQL_DELETE_PAGE, pageId);
     }
     
     private List<Page> findPagesForNotebook(Notebook notebook) {
-        return dbTemp.query(SQL_SELECT_PAGES_BY_NOTEBOOK_ID, new PageMapper(), notebook.getNotebookId());
+        return jdbcTemplate.query(SQL_SELECT_PAGES_BY_NOTEBOOK_ID, new PageMapper(), notebook.getNotebookId());
     }
     
     private List<Notebook> associatePagesWithNotebooks(List<Notebook> notebookList) {

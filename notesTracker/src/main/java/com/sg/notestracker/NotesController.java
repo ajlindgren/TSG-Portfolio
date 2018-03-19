@@ -21,8 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class NotesController {
  
-    @Inject
     NotesDao dao;
+    
+    @Inject
+    public NotesController(NotesDao dao) {
+        this.dao = dao;
+    }
     
     @GetMapping("/")
     public String getMainPage(Model model) {

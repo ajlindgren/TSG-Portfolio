@@ -15,26 +15,5 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"> 
 
     <!-- Bean definitions go here -->
-    <tx:annotation-driven/>
     
-    <context:component-scan base-package="com.sg.notestracker.dao" />
-    <bean id="dataSource"
-          class="org.apache.commons.dbcp2.BasicDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/notes"/>
-        <property name="username" value="root"/>
-        <property name="password" value="root"/>
-        <property name="initialSize" value="5"/>
-        <property name="maxTotal" value="10"/>
-    </bean>
-    
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-    
-    <bean id="jdbcTemplate"
-          class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
 </beans>

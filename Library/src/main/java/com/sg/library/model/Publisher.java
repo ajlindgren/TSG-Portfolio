@@ -79,14 +79,14 @@ public class Publisher {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 29 * hash + this.publisherId;
-        hash = 29 * hash + Objects.hashCode(this.name);
-        hash = 29 * hash + Objects.hashCode(this.street);
-        hash = 29 * hash + Objects.hashCode(this.city);
-        hash = 29 * hash + Objects.hashCode(this.state);
-        hash = 29 * hash + Objects.hashCode(this.zip);
-        hash = 29 * hash + Objects.hashCode(this.phone);
+        int hash = 7;
+        hash = 89 * hash + this.publisherId;
+        hash = 89 * hash + Objects.hashCode(this.name);
+        hash = 89 * hash + Objects.hashCode(this.street);
+        hash = 89 * hash + Objects.hashCode(this.city);
+        hash = 89 * hash + Objects.hashCode(this.state);
+        hash = 89 * hash + Objects.hashCode(this.zip);
+        hash = 89 * hash + Objects.hashCode(this.phone);
         return hash;
     }
 
@@ -125,6 +125,8 @@ public class Publisher {
         }
         return true;
     }
+
+    
     
     
 }
