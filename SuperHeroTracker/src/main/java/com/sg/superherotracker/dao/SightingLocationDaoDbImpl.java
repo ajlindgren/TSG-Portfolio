@@ -12,15 +12,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import javax.inject.Inject;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Alex
  */
+@Component
 public class SightingLocationDaoDbImpl implements SightingLocationDao {
     
     //prepared statements against Location
@@ -40,7 +43,7 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
             + "where sightingId = ?";
     private static final String SQL_DELETE_SIGHTING = "delete from sighting where sightingId = ?";
     //prepared statements for reference methods
-    private static final String SQL_SELECT_SIGHTINGS_BY_SUPER_ID = "select si.dateTime, "
+    private static final String SQL_SELECT_SIGHTINGS_BY_SUPER_ID = "select si.sightingId, si.dateTime, "
             + "si.locationId from sighting si join superSighting ss on si.sightingId = ss.sightingId "
             + "where ss.superId = ?";
     private static final String SQL_SELECT_SIGHTINGS_BY_LOCATION_ID = "select * from sighting "
@@ -58,6 +61,7 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
     
     private JdbcTemplate jdbcTemplate;
     
+    @Inject
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -117,12 +121,15 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
         jdbcTemplate.update(SQL_INSERT_SIGHTING,
                 timestamp,
                 sighting.getLocation().getLocationId());
-        int superId = jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class);
+        int sightingId = jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class);
         
-        sighting.setSightingId(superId);
+        sighting.setSightingId(sightingId);
+        jdbcTemplate.update(SQL_DELETE_SUPER_SIGHTING, sighting.getSightingId());
+        insertSuperSighting(sighting);
     }
 
     @Override
+    @Transactional
     public Sighting getSightingById(int sightingId) {
         try {
             Sighting sighting = jdbcTemplate.queryForObject(SQL_SELECT_SIGHTING, 
@@ -136,18 +143,21 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
     }
     
     @Override
+    @Transactional
     public List<Sighting> getSightingsBySuperId(int superId) {
         List<Sighting> sightingList = jdbcTemplate.query(SQL_SELECT_SIGHTINGS_BY_SUPER_ID, new SightingMapper(), superId);
         return associateLocationAndSupersWithSightings(sightingList);
     }
     
     @Override
+    @Transactional
     public List<Sighting> getSightingsByLocationId(int locId) {
         List<Sighting> sightingList = jdbcTemplate.query(SQL_SELECT_SIGHTINGS_BY_LOCATION_ID, new SightingMapper(), locId);
         return associateLocationAndSupersWithSightings(sightingList);
     }
 
     @Override
+    @Transactional
     public List<Sighting> getAllSightings() {
         List<Sighting> sightingList = jdbcTemplate.query(SQL_SELECT_ALL_SIGHTINGS,
                 new SightingMapper());
@@ -167,7 +177,9 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
     }
 
     @Override
+    @Transactional
     public void deleteSighting(int sightingId) {
+        jdbcTemplate.update(SQL_DELETE_SUPER_SIGHTING, sightingId);
         jdbcTemplate.update(SQL_DELETE_SIGHTING, sightingId);
     }
     
@@ -176,7 +188,7 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
         final List<Super> supers = sighting.getSupers();
         
         for (Super currentSuper : supers) {
-            jdbcTemplate.update(SQL_INSERT_SUPER_SIGHTING, sightingId, currentSuper.getSuperId());
+            jdbcTemplate.update(SQL_INSERT_SUPER_SIGHTING, currentSuper.getSuperId(), sightingId);
         }
     }
     

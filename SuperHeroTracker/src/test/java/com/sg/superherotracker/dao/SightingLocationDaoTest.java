@@ -32,6 +32,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class SightingLocationDaoTest {
     
     SightingLocationDao dao;
+    SuperPowerDao spDao;
     
     public SightingLocationDaoTest() {
     }
@@ -50,7 +51,19 @@ public class SightingLocationDaoTest {
         "test-applicationContext.xml");
         
         dao = ctx.getBean("sightingLocationDao", SightingLocationDao.class);
+        spDao = ctx.getBean("superPowerDao", SuperPowerDao.class);
         
+        
+        //delete all supers
+        List<Super> supers = spDao.getAllSupers();
+        for(Super currentSuper : supers) {
+            spDao.deleteSuper(currentSuper.getSuperId());
+        }
+        //delete all powers
+        List<Power> powers = spDao.getAllPowers();
+        for(Power currentPower : powers) {
+            spDao.deletePower(currentPower.getPowerId());
+        }
         //delete all sightings
         List<Sighting> sightings = dao.getAllSightings();
         for(Sighting currentSighting : sightings) {
@@ -61,6 +74,7 @@ public class SightingLocationDaoTest {
         for(Location currentLoc : locations) {
             dao.deleteLocation(currentLoc.getLocationId());
         }
+        
     }
     
     @After
@@ -151,7 +165,7 @@ public class SightingLocationDaoTest {
         
         dao.addLocation(loc);
         
-        List<Super> supers = new ArrayList<>();
+        List<Super> supers = spDao.getAllSupers();
         
         Sighting sighting = new Sighting();
         sighting.setDateTime(LocalDateTime.of(2012, 12, 12, 12, 12));
@@ -178,20 +192,21 @@ public class SightingLocationDaoTest {
         Power power = new Power();
         power.setDescription("Super Strength");
         
+        spDao.addPower(power);
+        
         Super super1 = new Super();
-        super1.setSuperId(1);
         super1.setName("Super Man");
         super1.setDescription("God");
-        super1.setPower(power);
+        super1.setPower(spDao.getPowerById(power.getPowerId()));
         Super super2 = new Super();
-        super2.setSuperId(2);
         super2.setName("The Hulk");
         super2.setDescription("Green");
-        super2.setPower(power);
+        super2.setPower(spDao.getPowerById(power.getPowerId()));
         
-        List<Super> supers = new ArrayList<>();
-        supers.add(super1);
-        supers.add(super2);
+        spDao.addSuper(super1);
+        spDao.addSuper(super2);
+        
+        List<Super> supers = spDao.getAllSupers();
         
         Sighting sighting = new Sighting();
         sighting.setDateTime(LocalDateTime.of(2012, 12, 12, 12, 12));
@@ -218,24 +233,25 @@ public class SightingLocationDaoTest {
         Power power = new Power();
         power.setDescription("Super Strength");
         
+        spDao.addPower(power);
+        
         Super super1 = new Super();
-        super1.setSuperId(1);
         super1.setName("Super Man");
         super1.setDescription("God");
         super1.setPower(power);
         Super super2 = new Super();
-        super2.setSuperId(2);
         super2.setName("The Hulk");
         super2.setDescription("Green");
         super2.setPower(power);
         
-        List<Super> supers = new ArrayList<>();
-        supers.add(super1);
-        supers.add(super2);
+        spDao.addSuper(super1);
+        spDao.addSuper(super2);
+        
+        List<Super> supers = spDao.getAllSupers();
         
         Sighting sighting = new Sighting();
         sighting.setDateTime(LocalDateTime.of(2012, 12, 12, 12, 12));
-        sighting.setLocation(loc);
+        sighting.setLocation(dao.getLocationById(loc.getLocationId()));
         sighting.setSupers(supers);
         
         dao.addSighting(sighting);
@@ -243,6 +259,8 @@ public class SightingLocationDaoTest {
         List<Sighting> sightingList = dao.getAllSightings();
         
         assertEquals(sightingList, dao.getSightingsByLocationId(loc.getLocationId()));
+        
+        //create sightings at 2 different locations, then get sighting by location ID to get the specific one you're looking for, not selecting the whole table.
     }
 
     @Test
@@ -263,7 +281,7 @@ public class SightingLocationDaoTest {
         dao.addLocation(loc1);
         dao.addLocation(loc2);
         
-        List<Super> supers = new ArrayList<>();
+        List<Super> supers = spDao.getAllSupers();
         
         Sighting sighting1 = new Sighting();
         sighting1.setDateTime(LocalDateTime.of(2012, 12, 12, 12, 12));
@@ -298,7 +316,7 @@ public class SightingLocationDaoTest {
         dao.addLocation(loc1);
         dao.addLocation(loc2);
         
-        List<Super> supers = new ArrayList<>();
+        List<Super> supers = spDao.getAllSupers();
         
         Sighting sighting = new Sighting();
         sighting.setDateTime(LocalDateTime.of(2012, 12, 12, 12, 12));
@@ -329,7 +347,7 @@ public class SightingLocationDaoTest {
         
         dao.addLocation(loc);
         
-        List<Super> supers = new ArrayList<>();
+        List<Super> supers = spDao.getAllSupers();
         
         Sighting sighting = new Sighting();
         sighting.setDateTime(LocalDateTime.of(2012, 12, 12, 12, 12));
@@ -344,5 +362,4 @@ public class SightingLocationDaoTest {
         dao.deleteSighting(sighting.getSightingId());
         assertNull(dao.getSightingById(sighting.getSightingId()));
     }
-
 }

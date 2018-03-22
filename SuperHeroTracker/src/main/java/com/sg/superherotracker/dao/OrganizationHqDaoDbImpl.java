@@ -15,12 +15,14 @@ import javax.inject.Inject;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Alex
  */
+@Component
 public class OrganizationHqDaoDbImpl implements OrganizationHqDao {
     
     //prepared statements against Headquarters
@@ -39,7 +41,7 @@ public class OrganizationHqDaoDbImpl implements OrganizationHqDao {
             + "email = ?, headquartersId = ? where organizationId = ?";
     private static final String SQL_DELETE_ORGANIZATION = "delete from organization where organizationId = ?";
     //prepared statements for reference methods
-    private static final String SQL_SELECT_ORGANIZATIONS_BY_SUPER_ID = "select org.name, "
+    private static final String SQL_SELECT_ORGANIZATIONS_BY_SUPER_ID = "select org.organizationId, org.name, "
             + "org.description, org.email, org.headquartersId from organization org "
             + "join superOrganization so on org.organizationId = so.organizationId "
             + "where so.superId = ?";
@@ -58,6 +60,7 @@ public class OrganizationHqDaoDbImpl implements OrganizationHqDao {
     
     private JdbcTemplate jdbcTemplate;
     
+    @Inject
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -115,9 +118,12 @@ public class OrganizationHqDaoDbImpl implements OrganizationHqDao {
         int orgId = jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class);
         
         org.setOrganizationId(orgId);
+        jdbcTemplate.update(SQL_DELETE_SUPER_ORGANIZATION, org.getOrganizationId());
+        insertSuperOrganization(org);
     }
 
     @Override
+    @Transactional
     public Organization getOrganizationById(int orgId) {
         try {
             Organization org = jdbcTemplate.queryForObject(SQL_SELECT_ORGANIZATION, 
@@ -131,18 +137,21 @@ public class OrganizationHqDaoDbImpl implements OrganizationHqDao {
     }
     
     @Override
+    @Transactional
     public List<Organization> getOrganizationsBySuperId(int superId) {
         List<Organization> orgList = jdbcTemplate.query(SQL_SELECT_ORGANIZATIONS_BY_SUPER_ID, new OrganizationMapper(), superId);
         return associateHeadquartersAndSupersWithOrganizations(orgList);
     }
     
     @Override
+    @Transactional
     public List<Organization> getOrganizationsByHeadquartersId(int hqId) {
         List<Organization> orgList = jdbcTemplate.query(SQL_SELECT_ORGANIZATIONS_BY_HQ_ID, new OrganizationMapper(), hqId);
         return associateHeadquartersAndSupersWithOrganizations(orgList);
     }
 
     @Override
+    @Transactional
     public List<Organization> getAllOrganizations() {
         List<Organization> orgList = jdbcTemplate.query(SQL_SELECT_ALL_ORGANIZATIONS,
                 new OrganizationMapper());
@@ -163,7 +172,9 @@ public class OrganizationHqDaoDbImpl implements OrganizationHqDao {
     }
 
     @Override
+    @Transactional
     public void deleteOrganization(int orgId) {
+        jdbcTemplate.update(SQL_DELETE_SUPER_ORGANIZATION, orgId);
         jdbcTemplate.update(SQL_DELETE_ORGANIZATION, orgId);
     }
     
@@ -172,7 +183,7 @@ public class OrganizationHqDaoDbImpl implements OrganizationHqDao {
         final List<Super> supers = org.getSupers();
         
         for (Super currentSuper : supers) {
-            jdbcTemplate.update(SQL_INSERT_SUPER_ORGANIZATION, orgId, currentSuper.getSuperId());
+            jdbcTemplate.update(SQL_INSERT_SUPER_ORGANIZATION, currentSuper.getSuperId(), orgId);
         }
     }
     

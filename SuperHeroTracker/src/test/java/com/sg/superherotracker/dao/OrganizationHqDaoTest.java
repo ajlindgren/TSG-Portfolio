@@ -29,6 +29,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class OrganizationHqDaoTest {
     
     OrganizationHqDao dao;
+    SuperPowerDao spDao;
     
     public OrganizationHqDaoTest() {
     }
@@ -47,7 +48,19 @@ public class OrganizationHqDaoTest {
         "test-applicationContext.xml");
         
         dao = ctx.getBean("organizationHqDao", OrganizationHqDao.class);
+        spDao = ctx.getBean("superPowerDao", SuperPowerDao.class);
         
+        
+        //delete all supers
+        List<Super> supers = spDao.getAllSupers();
+        for (Super currentSuper : supers) {
+            spDao.deleteSuper(currentSuper.getSuperId());
+        }
+        //delete all powers
+        List<Power> powers = spDao.getAllPowers();
+        for (Power currentPower : powers) {
+            spDao.deletePower(currentPower.getPowerId());
+        }
         //delete all organizations
         List<Organization> orgs = dao.getAllOrganizations();
         for (Organization currentOrg : orgs) {
@@ -130,7 +143,7 @@ public class OrganizationHqDaoTest {
         
         dao.addHeadquarters(hq);
 
-        List<Super> supers = new ArrayList<>();
+        List<Super> supers = spDao.getAllSupers();
         
         Organization org = new Organization();
         org.setName("Avengers");
@@ -156,18 +169,21 @@ public class OrganizationHqDaoTest {
         Power power = new Power();
         power.setDescription("Super Strength");
         
+        spDao.addPower(power);
+        
         Super super1 = new Super();
         super1.setName("Super Man");
         super1.setDescription("God");
-        super1.setPower(power);
+        super1.setPower(spDao.getPowerById(power.getPowerId()));
         Super super2 = new Super();
         super2.setName("The Hulk");
         super2.setDescription("Green");
-        super2.setPower(power);
+        super2.setPower(spDao.getPowerById(power.getPowerId()));
         
-        List<Super> supers = new ArrayList<>();
-        supers.add(super1);
-        supers.add(super2);
+        spDao.addSuper(super1);
+        spDao.addSuper(super2);
+        
+        List<Super> supers = spDao.getAllSupers();
         
         Organization org = new Organization();
         org.setName("Avengers");
@@ -193,18 +209,21 @@ public class OrganizationHqDaoTest {
         Power power = new Power();
         power.setDescription("Super Strength");
         
+        spDao.addPower(power);
+        
         Super super1 = new Super();
         super1.setName("Super Man");
         super1.setDescription("God");
-        super1.setPower(power);
+        super1.setPower(spDao.getPowerById(power.getPowerId()));
         Super super2 = new Super();
         super2.setName("The Hulk");
         super2.setDescription("Green");
-        super2.setPower(power);
+        super2.setPower(spDao.getPowerById(power.getPowerId()));
         
-        List<Super> supers = new ArrayList<>();
-        supers.add(super1);
-        supers.add(super2);
+        spDao.addSuper(super1);
+        spDao.addSuper(super2);
+        
+        List<Super> supers = spDao.getAllSupers();
         
         Organization org = new Organization();
         org.setName("Avengers");
@@ -233,7 +252,7 @@ public class OrganizationHqDaoTest {
         dao.addHeadquarters(hq1);
         dao.addHeadquarters(hq2);
         
-        List<Super> supers = new ArrayList<>();
+        List<Super> supers = spDao.getAllSupers();
         
         Organization org1 = new Organization();
         org1.setName("Avengers");
@@ -262,7 +281,7 @@ public class OrganizationHqDaoTest {
         
         dao.addHeadquarters(hq);
 
-        List<Super> supers = new ArrayList<>();
+        List<Super> supers = spDao.getAllSupers();
         
         Organization org = new Organization();
         org.setName("Avengers");
@@ -292,7 +311,7 @@ public class OrganizationHqDaoTest {
         
         dao.addHeadquarters(hq);
 
-        List<Super> supers = new ArrayList<>();
+        List<Super> supers = spDao.getAllSupers();
         
         Organization org = new Organization();
         org.setName("Avengers");

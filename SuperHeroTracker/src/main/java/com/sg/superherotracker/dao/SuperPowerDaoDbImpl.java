@@ -14,12 +14,14 @@ import javax.inject.Inject;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Alex
  */
+@Component
 public class SuperPowerDaoDbImpl implements SuperPowerDao {
     
     //prepared statements against Power
@@ -41,8 +43,12 @@ public class SuperPowerDaoDbImpl implements SuperPowerDao {
     private static final String SQL_SELECT_POWER_BY_SUPER_ID = "select power.powerId, power.description "
             + "from power join super on power.powerId = super.powerId where super.superId = ?";
     
+    private static final String SQL_DELETE_SUPER_ORGANIZATION = "delete from superOrganization where superId = ?";
+    private static final String SQL_DELETE_SUPER_SIGHTING = "delete from superSighting where superId = ?";
+    
     private JdbcTemplate jdbcTemplate;
     
+    @Inject
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -128,6 +134,8 @@ public class SuperPowerDaoDbImpl implements SuperPowerDao {
 
     @Override
     public void deleteSuper(int superId) {
+        jdbcTemplate.update(SQL_DELETE_SUPER_SIGHTING, superId);
+        jdbcTemplate.update(SQL_DELETE_SUPER_ORGANIZATION, superId);
         jdbcTemplate.update(SQL_DELETE_SUPER, superId);
     }
     
