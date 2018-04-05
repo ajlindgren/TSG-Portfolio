@@ -43,7 +43,7 @@ public class OrganizationHqDaoTest {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws SuperHeroTrackerDeleteDependencyException {
         ApplicationContext ctx = new ClassPathXmlApplicationContext (
         "test-applicationContext.xml");
         
@@ -122,7 +122,7 @@ public class OrganizationHqDaoTest {
     }
 
     @Test
-    public void testDeleteHeadquarters() {
+    public void testDeleteHeadquarters() throws SuperHeroTrackerDeleteDependencyException {
         Headquarters hq = new Headquarters();
         hq.setAddress("123 Super Street");
         hq.setPlanet("Earth");
@@ -149,6 +149,7 @@ public class OrganizationHqDaoTest {
         org.setName("Avengers");
         org.setDescription("We avenge things");
         org.setEmail("avengers@secret.com");
+        org.setAlignment(true);
         org.setHeadquarters(hq);
         org.setSupers(supers);
         
@@ -229,6 +230,7 @@ public class OrganizationHqDaoTest {
         org.setName("Avengers");
         org.setDescription("We avenge things");
         org.setEmail("avengers@secret.com");
+        org.setAlignment(true);
         org.setHeadquarters(hq1);
         org.setSupers(supers);
         
@@ -258,12 +260,14 @@ public class OrganizationHqDaoTest {
         org1.setName("Avengers");
         org1.setDescription("Vengeance");
         org1.setEmail("avengers@secret.com");
+        org1.setAlignment(true);
         org1.setHeadquarters(hq1);
         org1.setSupers(supers);
         Organization org2 = new Organization();
         org2.setName("Super Friends");
         org2.setDescription("Friendship");
         org2.setEmail("hey@there.com");
+        org2.setAlignment(true);
         org2.setHeadquarters(hq2);
         org2.setSupers(supers);
         
@@ -287,6 +291,7 @@ public class OrganizationHqDaoTest {
         org.setName("Avengers");
         org.setDescription("We avenge things");
         org.setEmail("avengers@secret.com");
+        org.setAlignment(true);
         org.setHeadquarters(hq);
         org.setSupers(supers);
         
@@ -317,6 +322,7 @@ public class OrganizationHqDaoTest {
         org.setName("Avengers");
         org.setDescription("We avenge things");
         org.setEmail("avengers@secret.com");
+        org.setAlignment(true);
         org.setHeadquarters(hq);
         org.setSupers(supers);
         

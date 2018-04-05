@@ -5,9 +5,12 @@
  */
 package com.sg.contactlistspringmvc.dao;
 
+/**
+ *
+ * @author ward
+ */
 public class ErrorMessage {
-
-    private String message;
+private String message;
 
     public String getMessage() {
         return message;
@@ -15,5 +18,5 @@ public class ErrorMessage {
 
     public void setMessage(String message) {
         this.message = message;
-    }
+    }    
 }

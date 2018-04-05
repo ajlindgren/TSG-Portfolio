@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sg.contactlistspringmvc.dao;
 
 import com.sg.contactlistspringmvc.model.Contact;
@@ -40,10 +35,12 @@ public class ContactListDaoTest {
 
     @Before
     public void setUp() {
+        // ask Spring for our DAO
         ApplicationContext ctx
                 = new ClassPathXmlApplicationContext("test-applicationContext.xml");
         dao = ctx.getBean("contactListDao", ContactListDao.class);
         
+        // remove all of the Contacts
         List<Contact> contacts = dao.getAllContacts();
         for (Contact currentContact : contacts) {
             dao.removeContact(currentContact.getContactId());
@@ -126,8 +123,8 @@ public class ContactListDaoTest {
         nc2.setEmail("john@jones.com");
         nc2.setPhone("5556667777");
         dao.addContact(nc2);
-        // Create new contact - same last name as first 
-        // contact but different company
+        // Create new contact - same last name as first contact but different
+        // company
         Contact nc3 = new Contact();
         nc3.setFirstName("Steve");
         nc3.setLastName("Smith");

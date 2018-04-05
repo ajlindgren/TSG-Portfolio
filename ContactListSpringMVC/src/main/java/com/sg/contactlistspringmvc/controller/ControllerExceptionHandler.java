@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ *
+ * @author ward
+ */
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
@@ -40,7 +44,7 @@ public class ControllerExceptionHandler {
         errorMessage.setMessage(messageBuilder.toString());
         return errorMessage;
     }
-
+    
     @ExceptionHandler(UpdateIntegrityException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody

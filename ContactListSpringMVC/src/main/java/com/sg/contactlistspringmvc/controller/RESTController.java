@@ -11,6 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,17 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
- * @author Alex
+ * @author ward
  */
 @CrossOrigin
-@RestController
+@Controller
 public class RESTController {
-
-    private ContactListDao dao;
+private ContactListDao dao;
 
     @Inject
     public RESTController(ContactListDao dao) {
@@ -37,7 +36,7 @@ public class RESTController {
 
     @RequestMapping(value = "/contact/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Contact getContact(@PathVariable("id") Long id) {
+    public Contact getContact(@PathVariable("id") long id) {
         return dao.getContactById(id);
     }
 
@@ -50,15 +49,14 @@ public class RESTController {
 
     @RequestMapping(value = "/contact/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteContact(@PathVariable("id") Long id) {
+    public void deleteContact(@PathVariable("id") long id) {
         dao.removeContact(id);
     }
 
     @RequestMapping(value = "/contact/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateContact(@PathVariable("id") Long id,
-            @Valid @RequestBody Contact contact) throws UpdateIntegrityException {
-
+    public void updateContact(@PathVariable("id") long id, @Valid @RequestBody Contact contact) throws UpdateIntegrityException {
+        
         if (id != contact.getContactId()) {
             throw new UpdateIntegrityException("Contact Id on URL must match Contact Id in submitted data.");
         }
@@ -69,5 +67,5 @@ public class RESTController {
     @ResponseBody
     public List<Contact> getAllContacts() {
         return dao.getAllContacts();
-    }
+    }    
 }

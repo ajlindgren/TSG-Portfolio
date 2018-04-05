@@ -1,13 +1,10 @@
-<%-- 
-    Document   : editContactForm
-    Created on : Mar 1, 2018, 1:23:59 PM
-    Author     : Alex
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!-- Directive for Spring Form tag libraries -->
+<!-- #1 - Directive for Spring Form tag libraries -->
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -37,8 +34,21 @@
                             Search
                         </a>
                     </li>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <li role="presentation">
+                            <a href="${pageContext.request.contextPath}/displayUserList">
+                                User Admin
+                            </a>
+                        </li>                        
+                    </sec:authorize>
+                    
                 </ul>    
             </div>
+            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                <p>Hello : ${pageContext.request.userPrincipal.name}
+                    | <a href="<c:url value="/j_spring_security_logout" />" > Logout</a>
+                </p>
+            </c:if>
             <sf:form class="form-horizontal" role="form" modelAttribute="contact"
                      action="editContact" method="POST">
                 <div class="form-group">
@@ -95,3 +105,4 @@
 
     </body>
 </html>
+

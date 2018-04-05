@@ -19,7 +19,7 @@ public interface SuperPowerDao {
     public Power getPowerById(int powerId);
     public List<Power> getAllPowers();
     public void updatePower(Power power);
-    public void deletePower(int powerId);
+    public void deletePower(int powerId) throws SuperHeroTrackerDeleteDependencyException;
     
     public void addSuper(Super addSuper);
     public Super getSuperById(int superId);

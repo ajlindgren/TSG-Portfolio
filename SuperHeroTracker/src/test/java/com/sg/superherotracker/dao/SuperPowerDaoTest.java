@@ -39,7 +39,7 @@ public class SuperPowerDaoTest {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws SuperHeroTrackerDeleteDependencyException {
         ApplicationContext ctx = new ClassPathXmlApplicationContext(
         "test-applicationContext.xml");
         
@@ -108,7 +108,7 @@ public class SuperPowerDaoTest {
     }
 
     @Test
-    public void testDeletePower() {
+    public void testDeletePower() throws SuperHeroTrackerDeleteDependencyException {
         Power power = new Power();
         power.setDescription("Flight: Diaphanous Wings");
     

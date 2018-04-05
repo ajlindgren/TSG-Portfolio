@@ -1,11 +1,8 @@
-<%-- 
-    Document   : contactDetails
-    Created on : Feb 28, 2018, 10:11:17 PM
-    Author     : Alex
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -20,39 +17,53 @@
             <hr/>
             <div class="navbar">
                 <ul class="nav nav-tabs">
-                    <li role="presentation">
+                  <li role="presentation">
                         <a href="${pageContext.request.contextPath}/index.jsp">
                             Home
                         </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="${pageContext.request.contextPath}/displayContactsPage">
-                            Contacts
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="${pageContext.request.contextPath}/displaySearchPage">
-                            Search
-                        </a>
-                    </li>
+                  </li>
+                  <li role="presentation">
+                      <a href="${pageContext.request.contextPath}/displayContactsPage">
+                          Contacts
+                      </a>
+                  </li>
+                  <li role="presentation">
+                      <a href="${pageContext.request.contextPath}/displaySearchPage">
+                          Search
+                      </a>
+                  </li>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <li role="presentation">
+                            <a href="${pageContext.request.contextPath}/displayUserList">
+                                User Admin
+                            </a>
+                        </li>                        
+                    </sec:authorize>
+                  
                 </ul>    
             </div>
-            <p>
-                Name: <c:out value="${contact.firstName}"/> <c:out value="${contact.lastName}"/>
-        </p>
-        <p>
-            Company: <c:out value="${contact.company}"/>
-    </p>
-    <p>
-        Phone: <c:out value="${contact.phone}"/>
-</p>
-<p>
-    Email: <c:out value="${contact.email}"/>
-</p>
-</div>
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="${pageContext.request.contextPath}/js/jquery-3.1.1.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                <p>Hello : ${pageContext.request.userPrincipal.name}
+                    | <a href="<c:url value="/j_spring_security_logout" />" > Logout</a>
+                </p>
+            </c:if>
+                <p>
+                    Name: <c:out value="${contact.firstName}"/> <c:out value="${contact.lastName}"/>
+                </p>
+                <p>
+                    Company: <c:out value="${contact.company}"/>
+                </p>
+                <p>
+                    Phone: <c:out value="${contact.phone}"/>
+                </p>
+                <p>
+                    Email: <c:out value="${contact.email}"/>
+                </p>
+        </div>
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="${pageContext.request.contextPath}/js/jquery-3.1.1.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 
-</body>
+    </body>
 </html>
+

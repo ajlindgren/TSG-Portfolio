@@ -5,8 +5,8 @@
  */
 package com.sg.superherotracker.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,6 +17,7 @@ import java.util.Objects;
 public class Sighting {
     
     private int sightingId;
+    @JsonFormat(pattern = "yyyy/MM/dd'T'HH:mm:ss")
     private LocalDateTime dateTime;
     private Location location;
     private List<Super> supers;

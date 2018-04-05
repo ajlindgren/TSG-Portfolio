@@ -5,6 +5,7 @@
  */
 package com.sg.superherotracker.service;
 
+import com.sg.superherotracker.dao.SuperHeroTrackerDeleteDependencyException;
 import com.sg.superherotracker.model.Headquarters;
 import com.sg.superherotracker.model.Location;
 import com.sg.superherotracker.model.Organization;
@@ -24,7 +25,7 @@ public interface SuperHeroTrackerServiceLayer {
     public Power getPowerById(int powerId);
     public List<Power> getAllPowers();
     public void updatePower(Power power);
-    public void deletePower(int powerId);
+    public void deletePower(int powerId) throws SuperHeroTrackerDeleteDependencyException;
     
     public void addSuper(Super addSuper);
     public Super getSuperById(int superId);
@@ -37,27 +38,29 @@ public interface SuperHeroTrackerServiceLayer {
     public Location getLocationById(int locId);
     public List<Location> getAllLocations();
     public void updateLocation(Location loc);
-    public void deleteLocation(int locId);
+    public void deleteLocation(int locId) throws SuperHeroTrackerDeleteDependencyException;
     
     public void addSighting(Sighting sighting);
     public Sighting getSightingById(int sightingId);
     public List<Sighting> getSightingsBySuperId(int superId);
     public List<Sighting> getSightingsByLocationId(int locId);
     public List<Sighting> getAllSightings();
+    public List<Sighting> get10RecentSightings();
     public void updateSighting(Sighting sighting);
     public void deleteSighting(int sightingId);
     
-    //OrganizationHeadquarters methods
+    //OrganizationHq methods
     public void addHeadquarters(Headquarters hq);
     public Headquarters getHeadquartersById(int hqId);
     public List<Headquarters> getAllHeadquarters();
     public void updateHeadquarters(Headquarters hq);
-    public void deleteHeadquarters(int hqId);
+    public void deleteHeadquarters(int hqId) throws SuperHeroTrackerDeleteDependencyException;
     
     public void addOrganization(Organization org);
     public Organization getOrganizationById(int orgId);
     public List<Organization> getOrganizationsBySuperId(int superId);
     public List<Organization> getOrganizationsByHeadquartersId(int hqId);
+    public List<Organization> getOrganizationsByAlignment(boolean isHero);
     public List<Organization> getAllOrganizations();
     public void updateOrganization(Organization org);
     public void deleteOrganization(int orgId);

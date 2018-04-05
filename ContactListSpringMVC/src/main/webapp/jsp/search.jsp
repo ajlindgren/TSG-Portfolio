@@ -1,12 +1,9 @@
-<%-- 
-    Document   : search
-    Created on : Feb 28, 2018, 8:50:18 PM
-    Author     : Alex
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@page contentType="text/html" pageEncoding="windows-1252"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,14 +17,41 @@
             <hr/>
             <div class="navbar">
                 <ul class="nav nav-tabs">
-                    <li role="presentation"><a href="${pageContext.request.contextPath}/index.jsp">Home</a></li>
-                    <li role="presentation"><a href="${pageContext.request.contextPath}/displayContactsPage">Contacts</a></li>
-                    <li role="presentation" class="active"><a href="${pageContext.request.contextPath}/displaySearchPage">Search</a></li>
+                    <li role="presentation"> 
+                        <a href="${pageContext.request.contextPath}/index.jsp">
+                            Home
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="${pageContext.request.contextPath}/displayContactsPage">
+                            Contacts
+                        </a>
+                    </li>
+                    <li role="presentation"
+                        class="active">
+                        <a href="${pageContext.request.contextPath}/displaySearchPage">
+                            Search
+                        </a> 
+                    </li>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <li role="presentation">
+                            <a href="${pageContext.request.contextPath}/displayUserList">
+                                User Admin
+                            </a>
+                        </li>                        
+                    </sec:authorize>
+                    
                 </ul>    
             </div>
+            <!-- Main Page Content Start -->
+            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                <p>Hello : ${pageContext.request.userPrincipal.name}
+                    | <a href="<c:url value="/j_spring_security_logout" />" > Logout</a>
+                </p>
+            </c:if>
             <!-- 
-Add a row to our container - this will hold the search summary table and
-the search form.
+                Add a row to our container - this will hold the search summary table and
+                the search form.
             -->
             <ul class="list-group" id="errorMessages"></ul>
             <div class="row">
@@ -92,9 +116,9 @@ the search form.
 
                 </div> <!-- End col div -->
 
-            </div> <!-- End row div -->
+            </div> <!-- End row div -->                
 
-
+            <!-- Main Page Content Stop -->
         </div>
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="${pageContext.request.contextPath}/js/jquery-3.1.1.min.js"></script>
@@ -103,3 +127,4 @@ the search form.
 
     </body>
 </html>
+

@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.inject.Inject;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -33,11 +34,11 @@ public class SuperPowerDaoDbImpl implements SuperPowerDao {
     private static final String SQL_DELETE_POWER = "delete from power where powerId = ?";
     //prepared statements against Super
     private static final String SQL_INSERT_SUPER = "insert into super "
-            + "(name, description, powerId) VALUES (?,?,?)";
+            + "(name, description, iconFile, powerId) VALUES (?,?,?,?)";
     private static final String SQL_SELECT_SUPER = "select * from super where superId = ?";
     private static final String SQL_SELECT_ALL_SUPERS = "select * from super";
     private static final String SQL_UPDATE_SUPER = "update super set name = ?, description = ?, "
-            + "powerId = ? where superId = ?";
+            + "iconFile = ?, powerId = ? where superId = ?";
     private static final String SQL_DELETE_SUPER = "delete from super where superId = ?";
     
     private static final String SQL_SELECT_POWER_BY_SUPER_ID = "select power.powerId, power.description "
@@ -89,8 +90,12 @@ public class SuperPowerDaoDbImpl implements SuperPowerDao {
     }
 
     @Override
-    public void deletePower(int powerId) {
+    public void deletePower(int powerId) throws SuperHeroTrackerDeleteDependencyException {
+        try {
         jdbcTemplate.update(SQL_DELETE_POWER, powerId);
+        } catch (DataAccessException ex) {
+            throw new SuperHeroTrackerDeleteDependencyException("Unable to delete power, delete super first");
+        }
     }
 
     @Override
@@ -99,6 +104,7 @@ public class SuperPowerDaoDbImpl implements SuperPowerDao {
         jdbcTemplate.update(SQL_INSERT_SUPER,
                 xSuper.getName(),
                 xSuper.getDescription(),
+                xSuper.getIconFile(),
                 xSuper.getPower().getPowerId());
         xSuper.setSuperId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         
@@ -128,11 +134,13 @@ public class SuperPowerDaoDbImpl implements SuperPowerDao {
         jdbcTemplate.update(SQL_UPDATE_SUPER,
                 upSuper.getName(),
                 upSuper.getDescription(),
+                upSuper.getIconFile(),
                 upSuper.getPower().getPowerId(),
                 upSuper.getSuperId());
     }
 
     @Override
+    @Transactional
     public void deleteSuper(int superId) {
         jdbcTemplate.update(SQL_DELETE_SUPER_SIGHTING, superId);
         jdbcTemplate.update(SQL_DELETE_SUPER_ORGANIZATION, superId);
@@ -169,6 +177,7 @@ public class SuperPowerDaoDbImpl implements SuperPowerDao {
             newSuper.setSuperId(rs.getInt("superId"));
             newSuper.setName(rs.getString("name"));
             newSuper.setDescription(rs.getString("description"));
+            newSuper.setIconFile(rs.getString("iconFile"));
             return newSuper;
         }
     }

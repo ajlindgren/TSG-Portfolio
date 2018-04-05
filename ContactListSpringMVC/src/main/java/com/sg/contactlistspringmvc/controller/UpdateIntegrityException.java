@@ -5,8 +5,11 @@
  */
 package com.sg.contactlistspringmvc.controller;
 
+/**
+ *
+ * @author ward
+ */
 public class UpdateIntegrityException extends Exception {
-
     public UpdateIntegrityException(String message) {
         super(message);
     }

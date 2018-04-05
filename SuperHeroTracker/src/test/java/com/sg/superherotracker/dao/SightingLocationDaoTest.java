@@ -46,7 +46,7 @@ public class SightingLocationDaoTest {
     }
     
     @Before
-    public void setUp() {
+    public void setUp()  throws SuperHeroTrackerDeleteDependencyException{
         ApplicationContext ctx = new ClassPathXmlApplicationContext (
         "test-applicationContext.xml");
         
@@ -138,7 +138,7 @@ public class SightingLocationDaoTest {
     }
 
     @Test
-    public void testDeleteLocation() {
+    public void testDeleteLocation()  throws SuperHeroTrackerDeleteDependencyException{
         Location loc = new Location();
         loc.setName("Central Park");
         loc.setDescription("Fight");

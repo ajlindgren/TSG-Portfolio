@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sg.contactlistspringmvc.dao;
 
 import com.sg.contactlistspringmvc.model.Contact;
@@ -18,10 +13,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- *
- * @author Alex
- */
 public class ContactListDaoDbImpl implements ContactListDao {
 
     private static final String SQL_INSERT_CONTACT
@@ -39,10 +30,6 @@ public class ContactListDaoDbImpl implements ContactListDao {
             + "where contact_id = ?";
     private static final String SQL_SELECT_ALL_CONTACTS
             = "select * from contacts";
-    private static final String SQL_SELECT_CONTACTS_BY_LAST_NAME
-            = "select * from contacts where last_name = ?";
-    private static final String SQL_SELECT_CONTACTS_BY_COMPANY
-            = "select * from contacts where company = ?";
 
     private JdbcTemplate jdbcTemplate;
 
@@ -60,10 +47,11 @@ public class ContactListDaoDbImpl implements ContactListDao {
                 contact.getPhone(),
                 contact.getEmail());
 
-        //query the DB for the id that was just assigned to the new row
-        int newId = jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class);
-
-        //set the new id value on the contact object and return it
+        // query the database for the id that was just assigned to the new
+        // row in the database
+        int newId = jdbcTemplate.queryForObject("select LAST_INSERT_ID()",
+                Integer.class);
+        // set the new id value on the contact object and return it
         contact.setContactId(newId);
         return contact;
     }
@@ -86,8 +74,7 @@ public class ContactListDaoDbImpl implements ContactListDao {
 
     @Override
     public List<Contact> getAllContacts() {
-        return jdbcTemplate.query(SQL_SELECT_ALL_CONTACTS,
-                new ContactMapper());
+        return jdbcTemplate.query(SQL_SELECT_ALL_CONTACTS, new ContactMapper());
     }
 
     @Override
@@ -96,7 +83,8 @@ public class ContactListDaoDbImpl implements ContactListDao {
             return jdbcTemplate.queryForObject(SQL_SELECT_CONTACT,
                     new ContactMapper(), contactId);
         } catch (EmptyResultDataAccessException ex) {
-            //no results for the given ID - just return null in this case
+            // there were no results for the given contact id - we just want to
+            // return null in this case
             return null;
         }
     }
@@ -106,33 +94,38 @@ public class ContactListDaoDbImpl implements ContactListDao {
         if (criteria.isEmpty()) {
             return getAllContacts();
         } else {
-            //build prepared statement based on the user's search terms
-            StringBuilder sQuery = new StringBuilder("select * from contacts where ");
-            //build the WHERE clause
+            StringBuilder sQuery = 
+                    new StringBuilder("select * from contacts where ");
+            // build the where clause
             int numParams = criteria.size();
             int paramPosition = 0;
-            //positional parameters go into an array - the order of the parameters
-            //will match the order of search criteria from the map
+            // we'll put the positional parameters into an array, the order of the
+            // parameters will match the order in which we get the search criteria
+            // from the map
             String[] paramVals = new String[numParams];
             Set<SearchTerm> keySet = criteria.keySet();
             Iterator<SearchTerm> iter = keySet.iterator();
-            //build WHERE clause based on key/value pairs in the 
-            //map build's WHERE clause/positional parameter array
+            // build up the where clause based on the key/value pairs in the map
+            // build where clause and positional parameter array
             while (iter.hasNext()) {
                 SearchTerm currentKey = iter.next();
-                //if we are not the first one in, we must add an AND to the WHERE
+                // if we are not the first one in, we must add an AND to the 
+                // where clause
                 if (paramPosition > 0) {
                     sQuery.append(" and ");
                 }
-                //now append criteria name
+                // now append our criteria name
                 sQuery.append(currentKey);
                 sQuery.append(" = ? ");
-                //grab value for this search criteria and put it into the paramVals array
+                // grab the value for this search criteria and put it into the 
+                // paramVals array
                 paramVals[paramPosition] = criteria.get(currentKey);
                 paramPosition++;
             }
 
-            return jdbcTemplate.query(sQuery.toString(), new ContactMapper(), paramVals);
+            return jdbcTemplate.query(sQuery.toString(),
+                    new ContactMapper(),
+                    paramVals);
         }
     }
 
@@ -149,4 +142,5 @@ public class ContactListDaoDbImpl implements ContactListDao {
             return contact;
         }
     }
+
 }

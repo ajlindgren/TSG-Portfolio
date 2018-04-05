@@ -7,6 +7,8 @@ package com.sg.superherotracker.model;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -15,8 +17,14 @@ import java.util.Objects;
 public class Location {
     
     private int locationId;
+    @NotEmpty(message = "You must provide a Name for the Location.")
+    @Length(max = 60, message = "Must be 60 characters or fewer.")
     private String name;
+    @NotEmpty(message = "You must provide a Description for the Location.")
+    @Length(max = 1000, message = "Must be 1000 characters or fewer.")
     private String description;
+    @NotEmpty(message = "You must provide an Address for the Location.")
+    @Length(max = 75, message = "Must be 75 characters or fewer.")
     private String address;
     private BigDecimal latitude;
     private BigDecimal longitude;

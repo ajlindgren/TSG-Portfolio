@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sg.contactlistspringmvc.controller;
 
 import com.sg.contactlistspringmvc.dao.ContactListDao;
@@ -20,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
- * @author Alex
+ * @author ward
  */
 @Controller
 public class ContactController {
-
+    
     ContactListDao dao;
-
+    
     @Inject
     public ContactController(ContactListDao dao) {
         this.dao = dao;
@@ -34,8 +29,13 @@ public class ContactController {
 
     @RequestMapping(value = "/displayContactsPage", method = RequestMethod.GET)
     public String displayContactsPage(Model model) {
+        // Get all the Contacts from the DAO
         List<Contact> contactList = dao.getAllContacts();
+        
+        // Put the List of Contacts on the Model
         model.addAttribute("contactList", contactList);
+        
+        // Return the logical name of our View component
         return "contacts";
     }
 
@@ -58,11 +58,11 @@ public class ContactController {
         // so it can display the new Contact in the table.
         return "redirect:displayContactsPage";
     }
-
+    
     @RequestMapping(value = "/displayContactDetails", method = RequestMethod.GET)
     public String displayContactDetails(HttpServletRequest request, Model model) {
         String contactIdParameter = request.getParameter("contactId");
-        int contactId = Integer.parseInt(contactIdParameter);
+        long contactId = Long.parseLong(contactIdParameter);
 
         Contact contact = dao.getContactById(contactId);
 
@@ -70,7 +70,7 @@ public class ContactController {
 
         return "contactDetails";
     }
-
+    
     @RequestMapping(value = "/deleteContact", method = RequestMethod.GET)
     public String deleteContact(HttpServletRequest request) {
         String contactIdParameter = request.getParameter("contactId");
@@ -78,7 +78,7 @@ public class ContactController {
         dao.removeContact(contactId);
         return "redirect:displayContactsPage";
     }
-
+    
     @RequestMapping(value = "/displayEditContactForm", method = RequestMethod.GET)
     public String displayEditContactForm(HttpServletRequest request, Model model) {
         String contactIdParameter = request.getParameter("contactId");
@@ -87,16 +87,17 @@ public class ContactController {
         model.addAttribute("contact", contact);
         return "editContactForm";
     }
-
+    
     @RequestMapping(value = "/editContact", method = RequestMethod.POST)
     public String editContact(@Valid @ModelAttribute("contact") Contact contact, BindingResult result) {
-
+        
         if (result.hasErrors()) {
             return "editContactForm";
         }
-
+        
         dao.updateContact(contact);
-
+        
         return "redirect:displayContactsPage";
     }
+
 }

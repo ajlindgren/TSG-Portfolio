@@ -6,6 +6,8 @@
 package com.sg.superherotracker.model;
 
 import java.util.Objects;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -14,7 +16,11 @@ import java.util.Objects;
 public class Headquarters {
     
     private int headquartersId;
+    @NotEmpty(message = "You must provide an Address for the HQ.")
+    @Length(max = 75, message = "Must be 75 characters or fewer.")
     private String address;
+    @NotEmpty(message = "You must provide a Planet for the HQ.")
+    @Length(max = 30, message = "Must be 30 characters or fewer.")
     private String planet;
 
     public int getHeadquartersId() {

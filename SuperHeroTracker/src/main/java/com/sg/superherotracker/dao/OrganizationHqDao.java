@@ -19,12 +19,13 @@ public interface OrganizationHqDao {
     public Headquarters getHeadquartersById(int hqId);
     public List<Headquarters> getAllHeadquarters();
     public void updateHeadquarters(Headquarters hq);
-    public void deleteHeadquarters(int hqId);
+    public void deleteHeadquarters(int hqId) throws SuperHeroTrackerDeleteDependencyException;
     
     public void addOrganization(Organization org);
     public Organization getOrganizationById(int orgId);
     public List<Organization> getOrganizationsBySuperId(int superId);
     public List<Organization> getOrganizationsByHeadquartersId(int hqId);
+    public List<Organization> getOrganizationsByAlignment(boolean isHero);
     public List<Organization> getAllOrganizations();
     public void updateOrganization(Organization org);
     public void deleteOrganization(int orgId);

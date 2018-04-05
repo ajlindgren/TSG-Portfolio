@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sg.contactlistspringmvc.model;
 
 import java.util.Objects;
@@ -12,7 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
- * @author Alex
+ * @author ward
  */
 public class Contact {
 
@@ -83,13 +78,13 @@ public class Contact {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + (int) (this.contactId ^ (this.contactId >>> 32));
-        hash = 29 * hash + Objects.hashCode(this.firstName);
-        hash = 29 * hash + Objects.hashCode(this.lastName);
-        hash = 29 * hash + Objects.hashCode(this.company);
-        hash = 29 * hash + Objects.hashCode(this.phone);
-        hash = 29 * hash + Objects.hashCode(this.email);
+        int hash = 3;
+        hash = 97 * hash + (int) (this.contactId ^ (this.contactId >>> 32));
+        hash = 97 * hash + Objects.hashCode(this.firstName);
+        hash = 97 * hash + Objects.hashCode(this.lastName);
+        hash = 97 * hash + Objects.hashCode(this.company);
+        hash = 97 * hash + Objects.hashCode(this.phone);
+        hash = 97 * hash + Objects.hashCode(this.email);
         return hash;
     }
 

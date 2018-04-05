@@ -6,6 +6,8 @@
 package com.sg.superherotracker.model;
 
 import java.util.Objects;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -14,6 +16,8 @@ import java.util.Objects;
 public class Power {
     
     private int powerId;
+    @NotEmpty(message = "You must describe the Power.")
+    @Length(max = 50, message = "Must be 50 characters or fewer.")
     private String description;
 
     public int getPowerId() {

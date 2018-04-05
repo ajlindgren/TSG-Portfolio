@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
- * @author Alex
+ * @author ward
  */
 @Controller
 public class SearchController {
-
+    
     private ContactListDao dao;
-
+    
     @Inject
     public SearchController(ContactListDao dao) {
         this.dao = dao;
@@ -69,5 +69,4 @@ public class SearchController {
 
         return dao.searchContacts(criteriaMap);
     }
-
 }

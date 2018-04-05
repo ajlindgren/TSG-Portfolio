@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.inject.Inject;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 public class SightingLocationDaoDbImpl implements SightingLocationDao {
-    
+
     //prepared statements against Location
     private static final String SQL_INSERT_LOCATION = "insert into location (name, description, address, latitude, longitude) "
             + "VALUES (?,?,?,?,?)";
@@ -42,6 +43,7 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
     private static final String SQL_UPDATE_SIGHTING = "update sighting set dateTime = ?, locationId = ? "
             + "where sightingId = ?";
     private static final String SQL_DELETE_SIGHTING = "delete from sighting where sightingId = ?";
+    private static final String SQL_SELECT_TEN_MOST_RECENT_SIGHTINGS = "select * from sighting order by dateTime desc limit 10";
     //prepared statements for reference methods
     private static final String SQL_SELECT_SIGHTINGS_BY_SUPER_ID = "select si.sightingId, si.dateTime, "
             + "si.locationId from sighting si join superSighting ss on si.sightingId = ss.sightingId "
@@ -52,20 +54,23 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
             + "loc.address, loc.latitude, loc.longitude from location loc join sighting on loc.locationId = sighting.locationId "
             + "where sighting.sightingId = ?";
     private static final String SQL_SELECT_SUPERS_BY_SIGHTING_ID = "select s.superId, "
-            + "s.name, s.description, s.powerId from super s join superSighting ss "
+            + "s.name, s.description, s.iconFile, s.powerId from super s join superSighting ss "
             + "on s.superId = ss.superId where ss.sightingId = ?";
     //update bridge table
     private static final String SQL_DELETE_SUPER_SIGHTING = "delete from superSighting where sightingId = ?";
     private static final String SQL_INSERT_SUPER_SIGHTING = "insert into superSighting "
             + "(superId, sightingId) values (?,?)";
-    
+    //destroy location
+    private static final String SQL_INSERT_DESTROYED_LOCATION = "insert into location (name, description, address, latitude, longitude) "
+            + "VALUES ('Destroyed','The clashing of supers has ruined this area.',?,?,?)";
+
     private JdbcTemplate jdbcTemplate;
-    
+
     @Inject
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     @Override
     @Transactional
     public void addLocation(Location loc) {
@@ -77,7 +82,7 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
                 loc.getLongitude());
         int locId = jdbcTemplate.queryForObject(
                 "select LAST_INSERT_ID()", Integer.class);
-        
+
         loc.setLocationId(locId);
     }
 
@@ -110,9 +115,26 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
     }
 
     @Override
-    public void deleteLocation(int locId) {
-        jdbcTemplate.update(SQL_DELETE_LOCATION, locId);
+    public void deleteLocation(int locId) throws SuperHeroTrackerDeleteDependencyException {
+        try {
+            jdbcTemplate.update(SQL_DELETE_LOCATION, locId);
+        } catch (DataAccessException ex) {
+            throw new SuperHeroTrackerDeleteDependencyException("Unable to delete location, delete sighting first");
+        }
     }
+    
+//    @Override
+//    public void destroyLocation(int locId) {
+//        try {
+//            jdbcTemplate.update(SQL_DELETE_LOCATION, locId);
+//        } catch (DataAccessException ex) {
+//            jdbcTemplate.update( 
+//            List<Sighting> sightings = jdbcTemplate.query(SQL_SELECT_SIGHTINGS_BY_LOCATION_ID, new SightingMapper(), locId);
+//            for (Sighting currentSighting : sightings) {
+//                currentSighting.setLocation(findLocationForSighting(currentSighting));
+//            }
+//        }
+//    }
 
     @Override
     @Transactional
@@ -122,7 +144,7 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
                 timestamp,
                 sighting.getLocation().getLocationId());
         int sightingId = jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class);
-        
+
         sighting.setSightingId(sightingId);
         jdbcTemplate.update(SQL_DELETE_SUPER_SIGHTING, sighting.getSightingId());
         insertSuperSighting(sighting);
@@ -132,7 +154,7 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
     @Transactional
     public Sighting getSightingById(int sightingId) {
         try {
-            Sighting sighting = jdbcTemplate.queryForObject(SQL_SELECT_SIGHTING, 
+            Sighting sighting = jdbcTemplate.queryForObject(SQL_SELECT_SIGHTING,
                     new SightingMapper(), sightingId);
             sighting.setLocation(findLocationForSighting(sighting));
             sighting.setSupers(findSupersForSighting(sighting));
@@ -141,14 +163,14 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
             return null;
         }
     }
-    
+
     @Override
     @Transactional
     public List<Sighting> getSightingsBySuperId(int superId) {
         List<Sighting> sightingList = jdbcTemplate.query(SQL_SELECT_SIGHTINGS_BY_SUPER_ID, new SightingMapper(), superId);
         return associateLocationAndSupersWithSightings(sightingList);
     }
-    
+
     @Override
     @Transactional
     public List<Sighting> getSightingsByLocationId(int locId) {
@@ -161,6 +183,13 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
     public List<Sighting> getAllSightings() {
         List<Sighting> sightingList = jdbcTemplate.query(SQL_SELECT_ALL_SIGHTINGS,
                 new SightingMapper());
+        return associateLocationAndSupersWithSightings(sightingList);
+    }
+    
+    @Override
+    @Transactional
+    public List<Sighting> get10RecentSightings() {
+        List<Sighting> sightingList = jdbcTemplate.query(SQL_SELECT_TEN_MOST_RECENT_SIGHTINGS, new SightingMapper());
         return associateLocationAndSupersWithSightings(sightingList);
     }
 
@@ -182,24 +211,24 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
         jdbcTemplate.update(SQL_DELETE_SUPER_SIGHTING, sightingId);
         jdbcTemplate.update(SQL_DELETE_SIGHTING, sightingId);
     }
-    
+
     private void insertSuperSighting(Sighting sighting) {
         final int sightingId = sighting.getSightingId();
         final List<Super> supers = sighting.getSupers();
-        
+
         for (Super currentSuper : supers) {
             jdbcTemplate.update(SQL_INSERT_SUPER_SIGHTING, currentSuper.getSuperId(), sightingId);
         }
     }
-    
+
     private List<Super> findSupersForSighting(Sighting sighting) {
         return jdbcTemplate.query(SQL_SELECT_SUPERS_BY_SIGHTING_ID, new SuperMapper(), sighting.getSightingId());
     }
-    
+
     private Location findLocationForSighting(Sighting sighting) {
         return jdbcTemplate.queryForObject(SQL_SELECT_LOCATION_BY_SIGHTING_ID, new LocationMapper(), sighting.getSightingId());
     }
-    
+
     private List<Sighting> associateLocationAndSupersWithSightings(List<Sighting> sightingList) {
         for (Sighting currentSighting : sightingList) {
             currentSighting.setLocation(findLocationForSighting(currentSighting));
@@ -207,9 +236,9 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
         }
         return sightingList;
     }
-    
+
     private static final class SightingMapper implements RowMapper<Sighting> {
-        
+
         @Override
         public Sighting mapRow(ResultSet rs, int i) throws SQLException {
             Sighting sighting = new Sighting();
@@ -218,9 +247,9 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
             return sighting;
         }
     }
-    
+
     private static final class LocationMapper implements RowMapper<Location> {
-        
+
         @Override
         public Location mapRow(ResultSet rs, int i) throws SQLException {
             Location loc = new Location();
@@ -233,17 +262,18 @@ public class SightingLocationDaoDbImpl implements SightingLocationDao {
             return loc;
         }
     }
-    
+
     private static final class SuperMapper implements RowMapper<Super> {
-        
+
         @Override
         public Super mapRow(ResultSet rs, int i) throws SQLException {
             Super newSuper = new Super();
             newSuper.setSuperId(rs.getInt("superId"));
             newSuper.setName(rs.getString("name"));
             newSuper.setDescription(rs.getString("description"));
+            newSuper.setIconFile(rs.getString("iconFile"));
             return newSuper;
         }
     }
-    
+
 }

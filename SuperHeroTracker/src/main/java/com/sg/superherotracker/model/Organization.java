@@ -7,6 +7,9 @@ package com.sg.superherotracker.model;
 
 import java.util.List;
 import java.util.Objects;
+import javax.validation.Valid;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -15,9 +18,16 @@ import java.util.Objects;
 public class Organization {
     
     private int organizationId;
+    @NotEmpty(message = "You must provide a Name for the Organization.")
+    @Length(max = 50, message = "Must be 50 characters or fewer.")
     private String name;
+    @NotEmpty(message = "You must provide a Description for the Organization.")
+    @Length(max = 1200, message = "Must be 1200 characters or fewer.")
     private String description;
+    @NotEmpty(message = "You must provide an Email for the Organization.")
+    @Length(max = 50, message = "Must be 50 characters or fewer.")
     private String email;
+    private Boolean alignment;
     private Headquarters headquarters;
     private List<Super> supers;
 
@@ -52,6 +62,14 @@ public class Organization {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public Boolean getAlignment() {
+        return alignment;
+    }
+
+    public void setAlignment(Boolean alignment) {
+        this.alignment = alignment;
+    }
 
     public Headquarters getHeadquarters() {
         return headquarters;
@@ -71,13 +89,14 @@ public class Organization {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 83 * hash + this.organizationId;
-        hash = 83 * hash + Objects.hashCode(this.name);
-        hash = 83 * hash + Objects.hashCode(this.description);
-        hash = 83 * hash + Objects.hashCode(this.email);
-        hash = 83 * hash + Objects.hashCode(this.headquarters);
-        hash = 83 * hash + Objects.hashCode(this.supers);
+        int hash = 3;
+        hash = 31 * hash + this.organizationId;
+        hash = 31 * hash + Objects.hashCode(this.name);
+        hash = 31 * hash + Objects.hashCode(this.description);
+        hash = 31 * hash + Objects.hashCode(this.email);
+        hash = 31 * hash + Objects.hashCode(this.alignment);
+        hash = 31 * hash + Objects.hashCode(this.headquarters);
+        hash = 31 * hash + Objects.hashCode(this.supers);
         return hash;
     }
 
@@ -105,6 +124,9 @@ public class Organization {
         if (!Objects.equals(this.email, other.email)) {
             return false;
         }
+        if (!Objects.equals(this.alignment, other.alignment)) {
+            return false;
+        }
         if (!Objects.equals(this.headquarters, other.headquarters)) {
             return false;
         }
@@ -113,8 +135,6 @@ public class Organization {
         }
         return true;
     }
-
-    
 
     
 }

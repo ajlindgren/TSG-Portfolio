@@ -7,6 +7,7 @@ package com.sg.superherotracker.service;
 
 import com.sg.superherotracker.dao.OrganizationHqDao;
 import com.sg.superherotracker.dao.SightingLocationDao;
+import com.sg.superherotracker.dao.SuperHeroTrackerDeleteDependencyException;
 import com.sg.superherotracker.dao.SuperPowerDao;
 import com.sg.superherotracker.model.Headquarters;
 import com.sg.superherotracker.model.Location;
@@ -64,7 +65,7 @@ public class SuperHeroTrackerServiceLayerImpl implements SuperHeroTrackerService
     }
 
     @Override
-    public void deletePower(int powerId) {
+    public void deletePower(int powerId) throws SuperHeroTrackerDeleteDependencyException {
         spDao.deletePower(powerId);
     }
 
@@ -114,7 +115,7 @@ public class SuperHeroTrackerServiceLayerImpl implements SuperHeroTrackerService
     }
 
     @Override
-    public void deleteLocation(int locId) {
+    public void deleteLocation(int locId) throws SuperHeroTrackerDeleteDependencyException {
         slDao.deleteLocation(locId);
     }
 
@@ -141,6 +142,11 @@ public class SuperHeroTrackerServiceLayerImpl implements SuperHeroTrackerService
     @Override
     public List<Sighting> getAllSightings() {
         return slDao.getAllSightings();
+    }
+    
+    @Override
+    public List<Sighting> get10RecentSightings() {
+        return slDao.get10RecentSightings();
     }
 
     @Override
@@ -174,7 +180,7 @@ public class SuperHeroTrackerServiceLayerImpl implements SuperHeroTrackerService
     }
 
     @Override
-    public void deleteHeadquarters(int hqId) {
+    public void deleteHeadquarters(int hqId) throws SuperHeroTrackerDeleteDependencyException {
         ohDao.deleteHeadquarters(hqId);
     }
 
@@ -196,6 +202,11 @@ public class SuperHeroTrackerServiceLayerImpl implements SuperHeroTrackerService
     @Override
     public List<Organization> getOrganizationsByHeadquartersId(int hqId) {
         return ohDao.getOrganizationsByHeadquartersId(hqId);
+    }
+    
+    @Override
+    public List<Organization> getOrganizationsByAlignment(boolean isHero) {
+        return ohDao.getOrganizationsByAlignment(isHero);
     }
 
     @Override

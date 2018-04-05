@@ -7,7 +7,7 @@
     <head>
         <title>Super Hero Tracker</title>
         <!-- Bootstrap core CSS -->
-        <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">        
+        <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
         <div class="container">
@@ -19,32 +19,49 @@
                 	<li role="presentation"><a href="${pageContext.request.contextPath}/displaySupers">Supers</a></li>
                         <li role="presentation"><a href="${pageContext.request.contextPath}/displayOrganizations">Organizations</a></li>
                         <li role="presentation"><a href="${pageContext.request.contextPath}/displaySightingLocations">Sighting Locations</a></li>
+                        <li role="presentation"><a href="${pageContext.request.contextPath}/displayManager">Manager</a></li>
                 </ul>    
             </div>
             </div>
-            <div class="container row" id="mainDiv">
+            <div class="container" id="mainDiv">
                 <!-- div containing google map info and page description -->
-                <div class="col-md-9" id="leftDiv">
-                    <h2>A BIG OL' MAP</h2>
+                <div id="topDiv">
+                    <h1>Welcome</h1>
+                    
+                    <p>
+                        Heroes and Villains have arisen from their secret lairs and now do battle
+                        all across the country. It is our civic (and fanboy/fangirl) duty to keep 
+                        track of any instances of Super Sightings!
+                    </p>
+                    <p>
+                        Therefore, we at The Software Guild have created this application
+                        to help the citizens of the United States keep track of any Super
+                        activity they witness.
+                    </p>
+                    <p>
+                        Feel free to mark and describe any such instances, and remember!
+                        Don't interfere!
+                    </p>
                 </div>
                 <!-- div containing list of recent sightings and addSighting -->
-                <div class="col-md-3" id="rightDiv">
-                    <div id="recentSightings">
+                <div id="bottomDiv">
+                    <div class="row-md-12" id="recentSightings">
                         <h2>10 most recent sightings</h2>
                         <c:forEach var="currentSighting" items="${sightingList}">
-                            <div>
+                            <div class="col-md-3">
                                 <p>
-                                    ${currentSighting.getDateTime()}
+                                    ${currentSighting.dateTime}
                                 </p>
                                 <p>
-                                    ${currentSighting.location.getName()}
+                                    ${currentSighting.location.name}
                                 </p>
+                                <c:forEach var="innerSuper" items="${currentSighting.supers}">
+                                <img src="${pageContext.request.contextPath}/${innerSuper.iconFile}"
+                                     class="img-thumbnail" alt="Super Icon" width="50" height="50">
+                                </c:forEach>
                             </div>
                         </c:forEach>
-                    </div>
-                    <div id="addSighting">
-                        <h2>add a new Super Hero Sighting</h2>
-                    </div>   
+                    </div> 
                 </div>
             </div>
         <!-- container endpoint -->
