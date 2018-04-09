@@ -1,3 +1,0 @@
-2018-02-07T21:45:37.488 : createStudent: Student ID: 0001 - Name: Alex Lindgren - Cohort: Java-Jan-2018-Mpls
-2018-02-07T21:49:08.988 : createStudent: Student ID: 1 - Name: 2 3 - Cohort: 4
-2018-02-07T21:49:17.738 : removeStudent: 1
